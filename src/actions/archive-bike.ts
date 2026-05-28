@@ -34,7 +34,7 @@ export async function archiveBikeAction(input: { bikeId: string }) {
 
   const { error } = await supabase
     .from('bikes')
-    .update({ is_archived: true })
+    .update({ is_archived: true } as never)
     .eq('id', input.bikeId);
 
   if (error) {
