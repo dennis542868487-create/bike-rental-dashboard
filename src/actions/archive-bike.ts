@@ -2,12 +2,6 @@
 
 import { ensureStaffActionAccess } from '@/lib/action-auth';
 import { createAdminSupabaseClient } from '@/lib/supabase-admin';
-import type { PostgrestError } from '@supabase/supabase-js';
-
-type BikeForArchive = {
-  id: string;
-  status: string | null;
-};
 
 export async function archiveBikeAction(input: { bikeId: string }) {
   const access = await ensureStaffActionAccess();
@@ -18,14 +12,11 @@ export async function archiveBikeAction(input: { bikeId: string }) {
 
   const supabase = createAdminSupabaseClient();
 
-  const { data: bike, error: bikeError } = (await supabase
+  const { data: bike, error: bikeError } = await supabase
     .from('bikes')
     .select('id, status')
     .eq('id', input.bikeId)
-    .maybeSingle()) as {
-      data: BikeForArchive | null;
-      error: PostgrestError | null;
-    };
+    .maybeSingle();
 
   if (bikeError || !bike) {
     return {
