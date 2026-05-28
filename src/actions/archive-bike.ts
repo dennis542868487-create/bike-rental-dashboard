@@ -14,7 +14,7 @@ export async function archiveBikeAction(input: { bikeId: string }) {
 
   const { data: bike, error: bikeError } = await supabase
     .from('bikes')
-    .select('status')
+    .select('id, status')
     .eq('id', input.bikeId)
     .maybeSingle();
 
