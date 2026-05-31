@@ -20,15 +20,18 @@ export async function completeRentalAction(input: CompleteRentalInput) {
 
   const supabase = createAdminSupabaseClient();
 
-  const { error } = await supabase.rpc('complete_rental', {
-    p_rental_id: input.rentalId,
-    p_actual_return_time: input.actualReturnTime,
-    p_final_fee: input.finalFee,
-    p_payment_method: null,
-    p_payment_status: 'paid',
-    p_notes: input.notes ?? null,
-    p_maintenance_needed: input.sendToMaintenance,
-  });
+  const { error } = await supabase.rpc(
+    'complete_rental',
+    {
+      p_rental_id: input.rentalId,
+      p_actual_return_time: input.actualReturnTime,
+      p_final_fee: input.finalFee,
+      p_payment_method: null,
+      p_payment_status: 'paid',
+      p_notes: input.notes ?? null,
+      p_maintenance_needed: input.sendToMaintenance,
+    } as never,
+  );
 
   if (error) {
     return {

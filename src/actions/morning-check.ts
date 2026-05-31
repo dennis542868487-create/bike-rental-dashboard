@@ -27,12 +27,15 @@ export async function submitMorningCheckAction(input: {
     notes: item.notes ?? '',
   }));
 
-  const { error } = await supabase.rpc('submit_morning_check', {
-    p_check_date: input.checkDate,
-    p_signature_path: 'signatures/morning-check-placeholder.txt',
-    p_notes: 'Submitted from dashboard placeholder form',
-    p_items: payload,
-  });
+  const { error } = await supabase.rpc(
+    'submit_morning_check',
+    {
+      p_check_date: input.checkDate,
+      p_signature_path: 'signatures/morning-check-placeholder.txt',
+      p_notes: 'Submitted from dashboard placeholder form',
+      p_items: payload,
+    } as never,
+  );
 
   if (error) {
     return {

@@ -26,8 +26,35 @@ export async function getBikeDetail(id: string): Promise<BikeDetail | null> {
     return null;
   }
 
+  const bike = data as unknown as {
+    id: string;
+    bike_number: string;
+    bike_type: string;
+    size?: string | null;
+    status: string;
+    notes?: string | null;
+    morning_check_area?: {
+      name?: string | null;
+    } | null;
+    maintenance_records?: Array<{
+      id: string;
+      maintenance_date: string;
+      work_done: string;
+      cost?: number | null;
+      notes?: string | null;
+    }> | null;
+    rental_bikes?: Array<{
+      rental?: {
+        id: string;
+        rental_number: string;
+        status: string;
+        completed_at?: string | null;
+      } | null;
+    }> | null;
+  };
+
   const maintenanceHistory =
-    data.maintenance_records?.map((record) => ({
+    bike.maintenance_records?.map((record) => ({
       id: record.id,
       date: formatDateTime(record.maintenance_date),
       workDone: record.work_done,
@@ -36,24 +63,25 @@ export async function getBikeDetail(id: string): Promise<BikeDetail | null> {
     })) ?? [];
 
   const rentalHistory =
-    data.rental_bikes
+    bike.rental_bikes
       ?.map((row) => row.rental)
       .filter(Boolean)
       .map((rental) => ({
-        id: rental.id,
-        rentalNumber: rental.rental_number,
-        status: rental.status,
-        completedAt: formatDateTime(rental.completed_at),
-      })) ?? [];
+        id: rental?.id ?? '',
+        rentalNumber: rental?.rental_number ?? '',
+        status: rental?.status ?? '',
+        completedAt: formatDateTime(rental?.completed_at ?? null),
+      }))
+      .filter((rental) => rental.id) ?? [];
 
   return {
-    id: data.id,
-    bikeNumber: data.bike_number,
-    bikeType: data.bike_type,
-    size: data.size ?? '',
-    status: data.status,
-    area: data.morning_check_area?.name ?? 'Unassigned',
-    notes: data.notes ?? '',
+    id: bike.id,
+    bikeNumber: bike.bike_number,
+    bikeType: bike.bike_type,
+    size: bike.size ?? '',
+    status: bike.status,
+    area: bike.morning_check_area?.name ?? 'Unassigned',
+    notes: bike.notes ?? '',
     maintenanceHistory,
     rentalHistory,
   };

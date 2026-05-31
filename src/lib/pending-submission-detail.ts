@@ -27,16 +27,29 @@ export async function getPendingSubmissionDetail(id: string): Promise<PendingSub
     return null;
   }
 
+  const submission = data as unknown as {
+    id: string;
+    submission_number: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    email?: string | null;
+    id_type: string;
+    id_last4: string;
+    waiver_accepted: boolean;
+    submitted_at: string;
+  };
+
   return {
-    id: data.id,
-    submissionNumber: data.submission_number,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    phoneNumber: data.phone_number,
-    email: data.email ?? '',
-    idType: data.id_type,
-    idLast4: data.id_last4,
-    waiverAccepted: data.waiver_accepted,
-    submittedAt: data.submitted_at,
+    id: submission.id,
+    submissionNumber: submission.submission_number,
+    firstName: submission.first_name,
+    lastName: submission.last_name,
+    phoneNumber: submission.phone_number,
+    email: submission.email ?? '',
+    idType: submission.id_type,
+    idLast4: submission.id_last4,
+    waiverAccepted: submission.waiver_accepted,
+    submittedAt: submission.submitted_at,
   };
 }

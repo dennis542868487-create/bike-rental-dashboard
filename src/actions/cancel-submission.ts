@@ -12,10 +12,13 @@ export async function cancelSubmissionAction(input: { submissionId: string; reas
 
   const supabase = createAdminSupabaseClient();
 
-  const { error } = await supabase.rpc('cancel_submission', {
-    p_submission_id: input.submissionId,
-    p_reason: input.reason?.trim() || null,
-  });
+  const { error } = await supabase.rpc(
+    'cancel_submission',
+    {
+      p_submission_id: input.submissionId,
+      p_reason: input.reason?.trim() || null,
+    } as never,
+  );
 
   if (error) {
     return {

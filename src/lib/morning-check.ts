@@ -15,7 +15,16 @@ export async function getMorningCheckItems(): Promise<MorningCheckItem[]> {
     return [];
   }
 
-  return data.map((row) => ({
+  const bikes = data as unknown as Array<{
+    id: string;
+    bike_number: string;
+    status: 'available' | 'rented' | 'maintenance';
+    morning_check_area?: {
+      name?: string | null;
+    } | null;
+  }>;
+
+  return bikes.map((row) => ({
     id: row.id,
     bikeNumber: row.bike_number,
     area: row.morning_check_area?.name ?? 'Unassigned',

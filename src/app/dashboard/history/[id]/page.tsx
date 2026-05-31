@@ -15,6 +15,7 @@ export default async function RentalHistoryDetailPage({ params }: RentalHistoryD
   const { id } = await params;
   const rental = await getRentalHistoryDetail(id);
   const { profile } = await getServerSessionProfile();
+  const userRole = (profile as { role?: string } | null)?.role;
 
   if (!rental) {
     notFound();
@@ -48,7 +49,7 @@ export default async function RentalHistoryDetailPage({ params }: RentalHistoryD
         </div>
       </DetailSection>
 
-      {profile?.role === 'owner' && rental.status !== 'voided' ? <VoidRentalForm rentalId={rental.id} /> : null}
+      {userRole === 'owner' && rental.status !== 'voided' ? <VoidRentalForm rentalId={rental.id} /> : null}
     </main>
   );
 }

@@ -4,8 +4,9 @@ import { exportRentalHistoryCsv } from '@/lib/rental-history-export';
 
 export async function GET() {
   const { session, profile } = await getServerSessionProfile();
+  const sessionProfile = profile as { is_active?: boolean; role?: string } | null;
 
-  if (!session || !profile || !profile.is_active || profile.role !== 'owner') {
+  if (!session || !sessionProfile || !sessionProfile.is_active || sessionProfile.role !== 'owner') {
     return new NextResponse('Forbidden', { status: 403 });
   }
 

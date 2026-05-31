@@ -15,7 +15,17 @@ export async function getPendingSubmissions(): Promise<PendingSubmissionRow[]> {
     return [];
   }
 
-  return data.map((row) => ({
+  const submissions = data as unknown as Array<{
+    id: string;
+    submission_number: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    submitted_at: string;
+    status: 'pending';
+  }>;
+
+  return submissions.map((row) => ({
     id: row.id,
     submissionNumber: row.submission_number,
     customerName: `${row.first_name} ${row.last_name}`,

@@ -57,7 +57,7 @@ export async function saveUserProfileAction(input: {
       full_name: input.fullName?.trim() || null,
       role: input.role,
       is_active: input.isActive,
-    });
+    } as never);
 
     if (insertError) {
       await supabase.auth.admin.deleteUser(authUser.user.id);
@@ -80,7 +80,7 @@ export async function saveUserProfileAction(input: {
       full_name: input.fullName?.trim() || null,
       role: input.role,
       is_active: input.isActive,
-    })
+    } as never)
     .eq('id', input.profileId);
 
   if (error) {

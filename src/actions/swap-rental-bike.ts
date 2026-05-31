@@ -31,7 +31,14 @@ export async function swapRentalBikeAction(input: SwapRentalBikeInput) {
     };
   }
 
-  const matchedOldBike = currentRentalBikes?.find((item) => item.bike?.bike_number === input.oldBikeId);
+  const rentalBikes = (currentRentalBikes ?? []) as Array<{
+    bike?: {
+      id?: string | null;
+      bike_number?: string | null;
+    } | null;
+  }>;
+
+  const matchedOldBike = rentalBikes.find((item) => item.bike?.bike_number === input.oldBikeId);
 
   if (!matchedOldBike?.bike?.id) {
     return {
@@ -40,11 +47,14 @@ export async function swapRentalBikeAction(input: SwapRentalBikeInput) {
     };
   }
 
-  const { error } = await supabase.rpc('swap_rental_bike', {
-    p_rental_id: input.rentalId,
-    p_old_bike_id: matchedOldBike.bike.id,
-    p_new_bike_id: input.newBikeId,
-  });
+  const { error } = await supabase.rpc(
+    'swap_rental_bike',
+    {
+      p_rental_id: input.rentalId,
+      p_old_bike_id: matchedOldBike.bike.id,
+      p_new_bike_id: input.newBikeId,
+    } as never,
+  );
 
   if (error) {
     return {

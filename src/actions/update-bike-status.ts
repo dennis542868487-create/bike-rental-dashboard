@@ -17,7 +17,7 @@ export async function updateBikeStatusAction(input: {
 
   const { error } = await supabase
     .from('bikes')
-    .update({ status: input.status })
+    .update({ status: input.status } as never)
     .eq('id', input.bikeId);
 
   if (error) {

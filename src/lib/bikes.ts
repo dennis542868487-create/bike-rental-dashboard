@@ -14,7 +14,18 @@ export async function getBikes(): Promise<BikeRow[]> {
     return [];
   }
 
-  return data.map((row) => ({
+  const bikes = data as unknown as Array<{
+    id: string;
+    bike_number: string;
+    bike_type: string;
+    size?: string | null;
+    status: BikeRow['status'];
+    morning_check_area?: {
+      name?: string | null;
+    } | null;
+  }>;
+
+  return bikes.map((row) => ({
     id: row.id,
     bikeNumber: row.bike_number,
     bikeType: row.bike_type,

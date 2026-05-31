@@ -45,7 +45,7 @@ export async function uploadBikePhotoAction(input: {
 
   const { error } = await supabase
     .from('bikes')
-    .update({ photo_path: photoPath })
+    .update({ photo_path: photoPath } as never)
     .eq('id', input.bikeId);
 
   if (error) {

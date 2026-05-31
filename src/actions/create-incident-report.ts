@@ -32,7 +32,7 @@ export async function createIncidentReportAction(input: {
     description,
     severity: input.severity?.trim() || null,
     created_by_user_id: access.session.user.id,
-  });
+  } as never);
 
   if (error) {
     return {

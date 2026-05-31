@@ -25,7 +25,9 @@ export async function archiveBikeAction(input: { bikeId: string }) {
     };
   }
 
-  if (bike.status === 'rented') {
+  const bikeStatus = (bike as { status?: string } | null)?.status;
+
+  if (bikeStatus === 'rented') {
     return {
       ok: false,
       message: 'Rented bikes cannot be archived.',

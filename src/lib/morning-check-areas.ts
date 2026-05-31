@@ -13,7 +13,15 @@ export async function getMorningCheckAreas(): Promise<MorningCheckAreaRow[]> {
     return [];
   }
 
-  return data.map((row) => ({
+  const areas = data as unknown as Array<{
+    id: string;
+    name: string;
+    display_order: number;
+    is_active: boolean;
+    notes?: string | null;
+  }>;
+
+  return areas.map((row) => ({
     id: row.id,
     name: row.name,
     displayOrder: row.display_order,

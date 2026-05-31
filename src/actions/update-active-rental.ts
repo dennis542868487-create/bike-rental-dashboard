@@ -19,12 +19,15 @@ export async function updateActiveRentalAction(input: UpdateActiveRentalInput) {
 
   const supabase = createAdminSupabaseClient();
 
-  const { error } = await supabase.rpc('update_active_rental', {
-    p_rental_id: input.rentalId,
-    p_expected_return_time: input.expectedReturnTime || null,
-    p_estimated_fee: input.estimatedFee,
-    p_notes: input.notes ?? null,
-  });
+  const { error } = await supabase.rpc(
+    'update_active_rental',
+    {
+      p_rental_id: input.rentalId,
+      p_expected_return_time: input.expectedReturnTime || null,
+      p_estimated_fee: input.estimatedFee,
+      p_notes: input.notes ?? null,
+    } as never,
+  );
 
   if (error) {
     return {

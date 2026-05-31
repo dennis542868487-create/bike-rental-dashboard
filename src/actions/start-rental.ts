@@ -38,18 +38,23 @@ export async function startRentalAction(input: StartRentalInput) {
     };
   }
 
-  const { error } = await supabase.rpc('start_rental', {
-    p_submission_id: input.submissionId,
-    p_customer_id: input.customerId ?? submission.customer_id,
-    p_adult_bike_quantity: input.adultBikeQuantity,
-    p_kid_bike_quantity: input.kidBikeQuantity,
-    p_trailer_quantity: input.trailerQuantity,
-    p_bike_ids: input.bikeIds ?? [],
-    p_start_time: input.startTime,
-    p_expected_return_time: input.expectedReturnTime,
-    p_estimated_fee: input.estimatedFee,
-    p_notes: input.notes ?? null,
-  });
+  const submissionCustomerId = (submission as { customer_id?: string | null } | null)?.customer_id ?? null;
+
+  const { error } = await supabase.rpc(
+    'start_rental',
+    {
+      p_submission_id: input.submissionId,
+      p_customer_id: input.customerId ?? submissionCustomerId,
+      p_adult_bike_quantity: input.adultBikeQuantity,
+      p_kid_bike_quantity: input.kidBikeQuantity,
+      p_trailer_quantity: input.trailerQuantity,
+      p_bike_ids: input.bikeIds ?? [],
+      p_start_time: input.startTime,
+      p_expected_return_time: input.expectedReturnTime,
+      p_estimated_fee: input.estimatedFee,
+      p_notes: input.notes ?? null,
+    } as never,
+  );
 
   if (error) {
     return {

@@ -21,11 +21,30 @@ export async function exportRentalHistoryCsv() {
     throw new Error(error.message);
   }
 
+  const rentals = (data ?? []) as unknown as Array<{
+    rental_number?: string | null;
+    status?: string | null;
+    completed_at?: string | null;
+    final_fee?: number | null;
+    notes?: string | null;
+    customer?: {
+      first_name?: string | null;
+      last_name?: string | null;
+      phone_number?: string | null;
+      email?: string | null;
+    } | null;
+    rental_bikes?: Array<{
+      bike?: {
+        bike_number?: string | null;
+      } | null;
+    }> | null;
+  }>;
+
   const header = ['rental_number', 'customer_name', 'phone_number', 'email', 'bike_numbers', 'completed_at', 'final_fee', 'notes'];
 
-  const rows = (data ?? []).map((row) => {
+  const rows = rentals.map((row) => {
     const customerName = `${row.customer?.first_name ?? ''} ${row.customer?.last_name ?? ''}`.trim();
-    const bikeNumbers = row.rental_bikes?.map((item) => item.bike?.bike_number).filter(Boolean).join(', ') ?? '';
+    const bikeNumbers = row.rental_bikes?.map((item) => item.bike?.bike_number ?? '').filter(Boolean).join(', ') ?? '';
 
     return [
       row.rental_number ?? '',

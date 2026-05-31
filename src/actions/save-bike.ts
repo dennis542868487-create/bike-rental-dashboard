@@ -35,8 +35,8 @@ export async function saveBikeAction(input: {
   };
 
   const query = input.bikeId
-    ? supabase.from('bikes').update(payload).eq('id', input.bikeId)
-    : supabase.from('bikes').insert(payload);
+    ? supabase.from('bikes').update(payload as never).eq('id', input.bikeId)
+    : supabase.from('bikes').insert(payload as never);
 
   const { error } = await query;
 

@@ -15,7 +15,8 @@ const navItems = [
 
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { profile } = await requireDashboardAccess();
-  const displayName = profile.full_name || profile.email || 'Signed-in user';
+  const sessionProfile = profile as unknown as { full_name?: string | null; email?: string | null; role?: string | null };
+  const displayName = sessionProfile.full_name || sessionProfile.email || 'Signed-in user';
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', minHeight: '100vh' }}>
@@ -35,7 +36,7 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontWeight: 600 }}>{displayName}</div>
-              <div style={{ fontSize: 13, color: '#6b7280', textTransform: 'capitalize' }}>{profile.role}</div>
+              <div style={{ fontSize: 13, color: '#6b7280', textTransform: 'capitalize' }}>{sessionProfile.role}</div>
             </div>
             <form action={logoutAction}>
               <button type="submit" style={{ padding: '8px 12px', borderRadius: 10, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer' }}>

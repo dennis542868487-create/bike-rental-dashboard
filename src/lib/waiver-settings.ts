@@ -21,11 +21,19 @@ export async function getActiveWaiverSettings(): Promise<WaiverSettingsDetail | 
     return null;
   }
 
+  const waiver = data as unknown as {
+    id: string;
+    version: string;
+    waiver_text: string;
+    customer_instructions?: string | null;
+    is_active: boolean;
+  };
+
   return {
-    id: data.id,
-    version: data.version,
-    waiverText: data.waiver_text,
-    customerInstructions: data.customer_instructions ?? '',
-    isActive: data.is_active,
+    id: waiver.id,
+    version: waiver.version,
+    waiverText: waiver.waiver_text,
+    customerInstructions: waiver.customer_instructions ?? '',
+    isActive: waiver.is_active,
   };
 }

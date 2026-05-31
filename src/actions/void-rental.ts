@@ -12,10 +12,13 @@ export async function voidRentalAction(input: { rentalId: string; reason?: strin
 
   const supabase = createAdminSupabaseClient();
 
-  const { error } = await supabase.rpc('void_rental', {
-    p_rental_id: input.rentalId,
-    p_reason: input.reason?.trim() || null,
-  });
+  const { error } = await supabase.rpc(
+    'void_rental',
+    {
+      p_rental_id: input.rentalId,
+      p_reason: input.reason?.trim() || null,
+    } as never,
+  );
 
   if (error) {
     return {

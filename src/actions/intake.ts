@@ -115,7 +115,7 @@ export async function submitIntakeAction(values: IntakeFormValues) {
     signature_path: signaturePath,
     submitted_at: submittedAt,
     status: 'pending',
-  });
+  } as never);
 
   if (error) {
     await supabase.storage.from('signatures').remove([signaturePath]);

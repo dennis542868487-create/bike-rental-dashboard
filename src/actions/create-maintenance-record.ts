@@ -34,7 +34,7 @@ export async function createMaintenanceRecordAction(input: {
     cost: typeof input.cost === 'number' && !Number.isNaN(input.cost) ? input.cost : null,
     notes: input.notes?.trim() || null,
     staff_user_id: access.session.user.id,
-  });
+  } as never);
 
   if (error) {
     return {

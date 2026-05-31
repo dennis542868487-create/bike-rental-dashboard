@@ -98,9 +98,13 @@ export async function getReportMetrics(): Promise<ReportMetric[]> {
     supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
   ]);
 
-  const dailyRevenue = (dailyRevenueRows ?? []).reduce((sum, row) => sum + Number(row.final_fee ?? 0), 0);
-  const monthlyRevenue = (monthlyRevenueRows ?? []).reduce((sum, row) => sum + Number(row.final_fee ?? 0), 0);
-  const yearlyRevenue = (yearlyRevenueRows ?? []).reduce((sum, row) => sum + Number(row.final_fee ?? 0), 0);
+  const dailyRevenueData = (dailyRevenueRows ?? []) as Array<{ final_fee?: number | null }>;
+  const monthlyRevenueData = (monthlyRevenueRows ?? []) as Array<{ final_fee?: number | null }>;
+  const yearlyRevenueData = (yearlyRevenueRows ?? []) as Array<{ final_fee?: number | null }>;
+
+  const dailyRevenue = dailyRevenueData.reduce((sum, row) => sum + Number(row.final_fee ?? 0), 0);
+  const monthlyRevenue = monthlyRevenueData.reduce((sum, row) => sum + Number(row.final_fee ?? 0), 0);
+  const yearlyRevenue = yearlyRevenueData.reduce((sum, row) => sum + Number(row.final_fee ?? 0), 0);
 
   return [
     createMetric({

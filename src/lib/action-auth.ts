@@ -16,11 +16,13 @@ async function getActionAccessProfile() {
     .eq('id', session.user.id)
     .maybeSingle();
 
-  if (!profile || !profile.is_active) {
+  const accessProfile = profile as unknown as { role?: string; is_active?: boolean } | null;
+
+  if (!accessProfile || !accessProfile.is_active) {
     return { ok: false as const, message: 'You do not have access to perform this action.' };
   }
 
-  return { ok: true as const, session, profile };
+  return { ok: true as const, session, profile: accessProfile };
 }
 
 export async function ensureStaffActionAccess() {
@@ -30,7 +32,7 @@ export async function ensureStaffActionAccess() {
     return access;
   }
 
-  if (!['owner', 'staff'].includes(access.profile.role)) {
+  if (!['owner', 'staff'].includes(access.profile.role ?? '')) {
     return { ok: false as const, message: 'You do not have access to perform this action.' };
   }
 

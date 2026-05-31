@@ -25,16 +25,34 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
     return null;
   }
 
-  const bikeNumbers = data.rental_bikes?.map((item) => item.bike?.bike_number).filter(Boolean) ?? [];
+  const rental = data as unknown as {
+    id: string;
+    rental_number: string;
+    status: string;
+    completed_at?: string | null;
+    final_fee?: number | null;
+    notes?: string | null;
+    customer?: {
+      first_name?: string | null;
+      last_name?: string | null;
+    } | null;
+    rental_bikes?: Array<{
+      bike?: {
+        bike_number?: string | null;
+      } | null;
+    }> | null;
+  };
+
+  const bikeNumbers = rental.rental_bikes?.map((item) => item.bike?.bike_number ?? '').filter(Boolean) ?? [];
 
   return {
-    id: data.id,
-    rentalNumber: data.rental_number,
-    customerName: `${data.customer?.first_name ?? ''} ${data.customer?.last_name ?? ''}`.trim(),
+    id: rental.id,
+    rentalNumber: rental.rental_number,
+    customerName: `${rental.customer?.first_name ?? ''} ${rental.customer?.last_name ?? ''}`.trim(),
     bikeNumbers,
-    completedAt: data.completed_at ?? '',
-    finalFee: data.final_fee ? `$${data.final_fee}` : '$0',
-    notes: data.notes ?? '',
-    status: data.status,
+    completedAt: rental.completed_at ?? '',
+    finalFee: rental.final_fee ? `$${rental.final_fee}` : '$0',
+    notes: rental.notes ?? '',
+    status: rental.status,
   };
 }

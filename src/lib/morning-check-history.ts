@@ -10,7 +10,16 @@ export async function getMorningCheckHistory(): Promise<MorningCheckHistoryRow[]
     return [];
   }
 
-  return data.map((row) => ({
+  const rows = data as unknown as Array<{
+    morning_check_id: string;
+    check_date: string;
+    bike_number: string;
+    area_name?: string | null;
+    check_status: string;
+    submitted_at: string;
+  }>;
+
+  return rows.map((row) => ({
     id: row.morning_check_id,
     checkDate: row.check_date,
     bikeNumber: row.bike_number,

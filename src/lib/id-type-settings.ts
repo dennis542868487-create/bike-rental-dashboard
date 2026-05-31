@@ -19,9 +19,15 @@ export async function getActiveIdTypeSettings(): Promise<IdTypeSettingsDetail | 
     return null;
   }
 
+  const settings = data as unknown as {
+    id: string;
+    version: string;
+    id_type_options?: string[] | null;
+  };
+
   return {
-    id: data.id,
-    version: data.version,
-    idTypeOptions: Array.isArray(data.id_type_options) ? data.id_type_options : [],
+    id: settings.id,
+    version: settings.version,
+    idTypeOptions: Array.isArray(settings.id_type_options) ? settings.id_type_options : [],
   };
 }
