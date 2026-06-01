@@ -7,9 +7,9 @@ export async function getActiveRentals(): Promise<ActiveRentalRow[]> {
 
   const { data, error } = await supabase
     .from('rentals')
-    .select('id, rental_number, expected_return_time, final_fee, status, customer:customers(first_name, last_name, phone_number), rental_bikes(bike: bikes(bike_number))')
+    .select('id, rental_number, start_time, final_fee, status, customer:customers(first_name, last_name, phone_number), rental_bikes(bike: bikes(bike_number))')
     .eq('status', 'active')
-    .order('expected_return_time', { ascending: true });
+    .order('start_time', { ascending: true });
 
   if (error || !data) {
     return [];
@@ -18,7 +18,7 @@ export async function getActiveRentals(): Promise<ActiveRentalRow[]> {
   const rentals = data as unknown as Array<{
     id: string;
     rental_number: string;
-    expected_return_time: string;
+    start_time: string;
     final_fee: number | null;
     status: string;
     customer?: {
@@ -39,7 +39,7 @@ export async function getActiveRentals(): Promise<ActiveRentalRow[]> {
     customerName: `${row.customer?.first_name ?? ''} ${row.customer?.last_name ?? ''}`.trim(),
     phoneNumber: row.customer?.phone_number ?? '',
     bikes: row.rental_bikes?.map((item) => item.bike?.bike_number ?? '').filter(Boolean).join(', ') ?? '',
-    expectedReturnTime: formatDateTime(row.expected_return_time),
+    startTime: formatDateTime(row.start_time),
     fee: row.final_fee ? `$${row.final_fee}` : '$0',
     status: 'active',
   }));

@@ -6,6 +6,16 @@ export type MorningCheckItem = {
   notes?: string;
 };
 
+export type MorningCheckFormValues = {
+  checkDate: string;
+  signatureDataUrl: string;
+  items: Array<{
+    bikeId: string;
+    checkStatus: 'all_good' | 'front_tire_flat' | 'rear_tire_flat' | 'sent_to_maintenance';
+    notes?: string;
+  }>;
+};
+
 export const morningCheckMockData: MorningCheckItem[] = [
   {
     id: '1',

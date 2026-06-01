@@ -4,7 +4,7 @@ export type ActiveRentalRow = {
   customerName: string;
   phoneNumber: string;
   bikes: string;
-  expectedReturnTime: string;
+  startTime: string;
   fee: string;
   status: 'active';
 };

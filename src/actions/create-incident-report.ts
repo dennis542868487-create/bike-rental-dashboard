@@ -31,7 +31,7 @@ export async function createIncidentReportAction(input: {
     bike_id: input.bikeId?.trim() || null,
     description,
     severity: input.severity?.trim() || null,
-    created_by_user_id: access.session.user.id,
+    created_by_user_id: access.user.id,
   } as never);
 
   if (error) {

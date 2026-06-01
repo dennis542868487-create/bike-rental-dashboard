@@ -3,17 +3,17 @@ import { createServerSupabaseClient } from '@/lib/supabase-server';
 async function getActionAccessProfile() {
   const supabase = await createServerSupabaseClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return { ok: false as const, message: 'You must be logged in.' };
   }
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('role, is_active')
-    .eq('id', session.user.id)
+    .eq('id', user.id)
     .maybeSingle();
 
   const accessProfile = profile as unknown as { role?: string; is_active?: boolean } | null;
@@ -22,7 +22,7 @@ async function getActionAccessProfile() {
     return { ok: false as const, message: 'You do not have access to perform this action.' };
   }
 
-  return { ok: true as const, session, profile: accessProfile };
+  return { ok: true as const, user, profile: accessProfile };
 }
 
 export async function ensureStaffActionAccess() {

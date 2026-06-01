@@ -15,7 +15,7 @@ export function ActiveRentalsTable({ rows }: ActiveRentalsTableProps) {
             <th style={{ padding: 12 }}>Customer</th>
             <th style={{ padding: 12 }}>Phone</th>
             <th style={{ padding: 12 }}>Bikes</th>
-            <th style={{ padding: 12 }}>Expected Return</th>
+            <th style={{ padding: 12 }}>Start Time</th>
             <th style={{ padding: 12 }}>Fee</th>
             <th style={{ padding: 12 }}>Status</th>
           </tr>
@@ -38,7 +38,7 @@ export function ActiveRentalsTable({ rows }: ActiveRentalsTableProps) {
                 <td style={{ padding: 12 }}>{row.customerName}</td>
                 <td style={{ padding: 12 }}>{row.phoneNumber}</td>
                 <td style={{ padding: 12 }}>{row.bikes}</td>
-                <td style={{ padding: 12 }}>{row.expectedReturnTime}</td>
+                <td style={{ padding: 12 }}>{row.startTime}</td>
                 <td style={{ padding: 12 }}>{row.fee}</td>
                 <td style={{ padding: 12 }}>{row.status}</td>
               </tr>
