@@ -1,0 +1,54 @@
+import { createServerSupabaseClient } from '@/lib/supabase-server';
+
+async function getActionAccessProfile() {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { ok: false as const, message: 'You must be logged in.' };
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role, is_active')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  const accessProfile = profile as unknown as { role?: string; is_active?: boolean } | null;
+
+  if (!accessProfile || !accessProfile.is_active) {
+    return { ok: false as const, message: 'You do not have access to perform this action.' };
+  }
+
+  return { ok: true as const, user, profile: accessProfile };
+}
+
+export async function ensureStaffActionAccess() {
+  const access = await getActionAccessProfile();
+
+  if (!access.ok) {
+    return access;
+  }
+
+  if (!['owner', 'staff'].includes(access.profile.role ?? '')) {
+    return { ok: false as const, message: 'You do not have access to perform this action.' };
+  }
+
+  return access;
+}
+
+export async function ensureOwnerActionAccess() {
+  const access = await getActionAccessProfile();
+
+  if (!access.ok) {
+    return access;
+  }
+
+  if (access.profile.role !== 'owner') {
+    return { ok: false as const, message: 'Only the owner can perform this action.' };
+  }
+
+  return access;
+}
