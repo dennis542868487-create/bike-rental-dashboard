@@ -1,7 +1,7 @@
 'use server';
 
 import { ensureStaffActionAccess } from '@/lib/action-auth';
-import { createAdminSupabaseClient } from '@/lib/supabase-admin';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export async function cancelSubmissionAction(input: { submissionId: string; reason?: string }) {
   const access = await ensureStaffActionAccess();
@@ -10,7 +10,10 @@ export async function cancelSubmissionAction(input: { submissionId: string; reas
     return access;
   }
 
-  const supabase = createAdminSupabaseClient();
+  // Use the server client (anon key + user session) so that auth.uid() is available
+  // inside the SECURITY DEFINER function. SECURITY DEFINER still bypasses RLS.
+  // The admin (service_role) client has no sub claim in its JWT → auth.uid() = NULL.
+  const supabase = await createServerSupabaseClient();
 
   const { error } = await supabase.rpc(
     'cancel_submission',

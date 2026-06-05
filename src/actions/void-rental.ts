@@ -1,7 +1,7 @@
 'use server';
 
 import { ensureOwnerActionAccess } from '@/lib/action-auth';
-import { createAdminSupabaseClient } from '@/lib/supabase-admin';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export async function voidRentalAction(input: { rentalId: string; reason?: string }) {
   const access = await ensureOwnerActionAccess();
@@ -15,7 +15,7 @@ export async function voidRentalAction(input: { rentalId: string; reason?: strin
     return { ok: false as const, message: 'A void reason is required.' };
   }
 
-  const supabase = createAdminSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const { error } = await supabase.rpc(
     'void_rental',

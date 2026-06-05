@@ -1,7 +1,7 @@
 'use server';
 
 import { ensureStaffActionAccess } from '@/lib/action-auth';
-import { createAdminSupabaseClient } from '@/lib/supabase-admin';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export type CompleteRentalInput = {
   rentalId: string;
@@ -20,7 +20,7 @@ export async function completeRentalAction(input: CompleteRentalInput) {
 
   const resolvedActualReturnTime = input.actualReturnTime || new Date().toISOString();
 
-  const supabase = createAdminSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const { error } = await supabase.rpc(
     'complete_rental',

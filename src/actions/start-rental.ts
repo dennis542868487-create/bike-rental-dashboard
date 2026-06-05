@@ -1,7 +1,7 @@
 'use server';
 
 import { ensureStaffActionAccess } from '@/lib/action-auth';
-import { createAdminSupabaseClient } from '@/lib/supabase-admin';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export type StartRentalInput = {
   submissionId: string;
@@ -29,7 +29,7 @@ export async function startRentalAction(input: StartRentalInput) {
     return { ok: false as const, message: 'Expected return time is required.' };
   }
 
-  const supabase = createAdminSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const { data: submission, error: submissionError } = await supabase
     .from('customer_submissions')

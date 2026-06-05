@@ -1,7 +1,7 @@
 'use server';
 
 import { ensureStaffActionAccess } from '@/lib/action-auth';
-import { createAdminSupabaseClient } from '@/lib/supabase-admin';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export type SwapRentalBikeInput = {
   rentalId: string;
@@ -16,7 +16,7 @@ export async function swapRentalBikeAction(input: SwapRentalBikeInput) {
     return access;
   }
 
-  const supabase = createAdminSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const { data: currentRentalBikes, error: currentRentalBikesError } = await supabase
     .from('rental_bikes')

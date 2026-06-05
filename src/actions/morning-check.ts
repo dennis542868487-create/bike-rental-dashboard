@@ -2,7 +2,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { ensureStaffActionAccess } from '@/lib/action-auth';
-import { createAdminSupabaseClient } from '@/lib/supabase-admin';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export type MorningCheckSubmitItem = {
   bikeId: string;
@@ -54,7 +54,7 @@ export async function submitMorningCheckAction(input: {
     };
   }
 
-  const supabase = createAdminSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   const signaturePath = `morning-check/${randomUUID()}.png`;
 
   const { error: uploadError } = await supabase.storage

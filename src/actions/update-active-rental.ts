@@ -1,7 +1,7 @@
 'use server';
 
 import { ensureStaffActionAccess } from '@/lib/action-auth';
-import { createAdminSupabaseClient } from '@/lib/supabase-admin';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export type UpdateActiveRentalInput = {
   rentalId: string;
@@ -17,7 +17,7 @@ export async function updateActiveRentalAction(input: UpdateActiveRentalInput) {
     return access;
   }
 
-  const supabase = createAdminSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   const { error } = await supabase.rpc(
     'update_active_rental',
