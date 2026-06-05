@@ -18,13 +18,15 @@ export async function completeRentalAction(input: CompleteRentalInput) {
     return access;
   }
 
+  const resolvedActualReturnTime = input.actualReturnTime || new Date().toISOString();
+
   const supabase = createAdminSupabaseClient();
 
   const { error } = await supabase.rpc(
     'complete_rental',
     {
       p_rental_id: input.rentalId,
-      p_actual_return_time: input.actualReturnTime,
+      p_actual_return_time: resolvedActualReturnTime,
       p_final_fee: input.finalFee,
       p_payment_method: null,
       p_payment_status: 'paid',

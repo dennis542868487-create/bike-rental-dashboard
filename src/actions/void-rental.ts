@@ -10,13 +10,18 @@ export async function voidRentalAction(input: { rentalId: string; reason?: strin
     return access;
   }
 
+  const trimmedReason = input.reason?.trim();
+  if (!trimmedReason) {
+    return { ok: false as const, message: 'A void reason is required.' };
+  }
+
   const supabase = createAdminSupabaseClient();
 
   const { error } = await supabase.rpc(
     'void_rental',
     {
       p_rental_id: input.rentalId,
-      p_reason: input.reason?.trim() || null,
+      p_reason: trimmedReason,
     } as never,
   );
 

@@ -50,6 +50,13 @@ export async function submitIntakeAction(values: IntakeFormValues) {
     };
   }
 
+  if (!normalizedValues.idType) {
+    return {
+      ok: false,
+      message: 'ID type options are not available right now. Please ask staff for help.',
+    };
+  }
+
   if (!normalizedValues.waiverAccepted) {
     return {
       ok: false,

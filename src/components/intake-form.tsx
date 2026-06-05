@@ -6,13 +6,19 @@ import { submitIntakeAction } from '@/actions/intake';
 import { SignaturePadInput } from '@/components/signature-pad-input';
 import type { IntakeFormValues } from '@/types/intake';
 
+type IdTypeOption = {
+  value: string;
+  label: string;
+};
+
 type IntakeFormProps = {
   waiverVersion: string;
   waiverText: string;
   customerInstructions: string;
+  idTypeOptions: IdTypeOption[];
 };
 
-export function IntakeForm({ waiverVersion, waiverText, customerInstructions }: IntakeFormProps) {
+export function IntakeForm({ waiverVersion, waiverText, customerInstructions, idTypeOptions }: IntakeFormProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -28,7 +34,7 @@ export function IntakeForm({ waiverVersion, waiverText, customerInstructions }: 
       lastName: '',
       phoneNumber: '',
       email: '',
-      idType: 'drivers_licence',
+      idType: idTypeOptions[0]?.value ?? '',
       idNumber: '',
       signatureDataUrl: '',
       waiverAccepted: false,
@@ -75,10 +81,9 @@ export function IntakeForm({ waiverVersion, waiverText, customerInstructions }: 
         <label>
           <div>Photo ID Type</div>
           <select {...register('idType')} style={{ width: '100%', padding: 12, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}>
-            <option value="drivers_licence">Driver&apos;s Licence</option>
-            <option value="passport">Passport</option>
-            <option value="bcid">BCID</option>
-            <option value="other_gov_id">Other government-issued photo ID</option>
+            {idTypeOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
           </select>
         </label>
         <label>

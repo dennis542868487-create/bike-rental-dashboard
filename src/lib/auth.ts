@@ -4,20 +4,20 @@ import { createServerSupabaseClient } from '@/lib/supabase-server';
 export async function getServerSessionProfile() {
   const supabase = await createServerSupabaseClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return { session: null, profile: null };
   }
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('email, full_name, role, is_active')
-    .eq('id', session.user.id)
+    .eq('id', user.id)
     .maybeSingle();
 
-  return { session, profile };
+  return { session: { user }, profile };
 }
 
 export async function requireDashboardAccess() {

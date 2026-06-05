@@ -3,7 +3,7 @@ export type IntakeFormValues = {
   lastName: string;
   phoneNumber: string;
   email: string;
-  idType: 'drivers_licence' | 'passport' | 'bcid' | 'other_gov_id';
+  idType: string;
   idNumber: string;
   signatureDataUrl: string;
   waiverAccepted: boolean;

@@ -16,7 +16,7 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
 
   const { data, error } = await supabase
     .from('rentals')
-    .select('id, rental_number, status, completed_at, final_fee, notes, customer:customers(first_name, last_name), rental_bikes(bike:bikes(bike_number))')
+    .select('id, rental_number, status, completed_at, final_fee, notes, customer:customers(first_name, last_name), rental_bikes(unassigned_at, bike:bikes(bike_number))')
     .eq('id', id)
     .in('status', ['completed', 'voided'])
     .maybeSingle();
@@ -37,13 +37,18 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
       last_name?: string | null;
     } | null;
     rental_bikes?: Array<{
+      unassigned_at?: string | null;
       bike?: {
         bike_number?: string | null;
       } | null;
     }> | null;
   };
 
-  const bikeNumbers = rental.rental_bikes?.map((item) => item.bike?.bike_number ?? '').filter(Boolean) ?? [];
+  const bikeNumbers =
+    rental.rental_bikes
+      ?.filter((item) => item.unassigned_at === null)
+      .map((item) => item.bike?.bike_number ?? '')
+      .filter(Boolean) ?? [];
 
   return {
     id: rental.id,

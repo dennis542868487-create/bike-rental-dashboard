@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { logoutAction } from '@/actions/logout';
 import { requireDashboardAccess } from '@/lib/auth';
+import { getBusinessSettings } from '@/lib/business-settings';
 
 const navItems = [
   { href: '/dashboard', label: 'Overview' },
@@ -14,14 +15,17 @@ const navItems = [
 ];
 
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { profile } = await requireDashboardAccess();
+  const [{ profile }, businessSettings] = await Promise.all([
+    requireDashboardAccess(),
+    getBusinessSettings(),
+  ]);
   const sessionProfile = profile as unknown as { full_name?: string | null; email?: string | null; role?: string | null };
   const displayName = sessionProfile.full_name || sessionProfile.email || 'Signed-in user';
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', minHeight: '100vh' }}>
       <aside style={{ borderRight: '1px solid #e5e7eb', padding: 20 }}>
-        <h2 style={{ marginTop: 0 }}>Wander Bike</h2>
+        <h2 style={{ marginTop: 0 }}>{businessSettings.businessName}</h2>
         <nav style={{ display: 'grid', gap: 10 }}>
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} style={{ color: '#111827', textDecoration: 'none' }}>

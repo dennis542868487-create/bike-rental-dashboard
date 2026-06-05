@@ -73,6 +73,32 @@ export async function saveUserProfileAction(input: {
     };
   }
 
+  // Last-owner protection: ensure at least one active owner remains after this change.
+  const { data: currentProfile } = await supabase
+    .from('profiles')
+    .select('role, is_active')
+    .eq('id', input.profileId)
+    .maybeSingle();
+
+  const currentRow = currentProfile as { role?: string; is_active?: boolean } | null;
+  const losingOwnerStatus =
+    currentRow?.role === 'owner' &&
+    currentRow?.is_active === true &&
+    (input.role === 'staff' || input.isActive === false);
+
+  if (losingOwnerStatus) {
+    const { count } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'owner')
+      .eq('is_active', true)
+      .neq('id', input.profileId);
+
+    if ((count ?? 0) === 0) {
+      return { ok: false as const, message: 'Cannot remove the last active owner.' };
+    }
+  }
+
   const { error } = await supabase
     .from('profiles')
     .update({

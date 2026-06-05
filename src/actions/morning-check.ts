@@ -6,6 +6,7 @@ import { createAdminSupabaseClient } from '@/lib/supabase-admin';
 
 export type MorningCheckSubmitItem = {
   bikeId: string;
+  areaId?: string | null;
   checkStatus: 'all_good' | 'front_tire_flat' | 'rear_tire_flat' | 'sent_to_maintenance';
   notes?: string;
 };
@@ -72,6 +73,7 @@ export async function submitMorningCheckAction(input: {
 
   const payload = input.items.map((item) => ({
     bike_id: item.bikeId,
+    area_id: item.areaId ?? '',
     check_status: item.checkStatus,
     notes: item.notes ?? '',
   }));

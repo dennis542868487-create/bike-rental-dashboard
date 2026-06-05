@@ -23,6 +23,12 @@ export async function startRentalAction(input: StartRentalInput) {
     return access;
   }
 
+  const resolvedStartTime = input.startTime || new Date().toISOString();
+
+  if (!input.expectedReturnTime) {
+    return { ok: false as const, message: 'Expected return time is required.' };
+  }
+
   const supabase = createAdminSupabaseClient();
 
   const { data: submission, error: submissionError } = await supabase
@@ -49,7 +55,7 @@ export async function startRentalAction(input: StartRentalInput) {
       p_kid_bike_quantity: input.kidBikeQuantity,
       p_trailer_quantity: input.trailerQuantity,
       p_bike_ids: input.bikeIds ?? [],
-      p_start_time: input.startTime,
+      p_start_time: resolvedStartTime,
       p_expected_return_time: input.expectedReturnTime,
       p_estimated_fee: input.estimatedFee,
       p_notes: input.notes ?? null,

@@ -12,6 +12,7 @@ type MorningCheckFormProps = {
 type EditableMorningCheckItem = {
   id: string;
   bikeNumber: string;
+  areaId: string | null;
   area: string;
   status: 'all_good' | 'front_tire_flat' | 'rear_tire_flat' | 'sent_to_maintenance';
   notes: string;
@@ -22,6 +23,7 @@ export function MorningCheckForm({ items }: MorningCheckFormProps) {
     return items.map((item) => ({
       id: item.id,
       bikeNumber: item.bikeNumber,
+      areaId: item.areaId,
       area: item.area,
       status: item.status,
       notes: item.notes ?? '',
@@ -46,6 +48,7 @@ export function MorningCheckForm({ items }: MorningCheckFormProps) {
         signatureDataUrl,
         items: formItems.map((item) => ({
           bikeId: item.id,
+          areaId: item.areaId,
           checkStatus: item.status,
           notes: item.notes,
         })),

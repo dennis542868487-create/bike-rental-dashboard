@@ -1,33 +1,62 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 
-export type IdTypeSettingsDetail = {
+export type IdTypeOption = {
   id: string;
-  version: string;
-  idTypeOptions: string[];
+  value: string;
+  label: string;
+  isActive: boolean;
+  sortOrder: number;
 };
 
-export async function getActiveIdTypeSettings(): Promise<IdTypeSettingsDetail | null> {
+// Returns all options (active + inactive) — for the owner settings page.
+export async function getAllIdTypeOptions(): Promise<IdTypeOption[]> {
   const supabase = await createServerSupabaseClient();
 
   const { data, error } = await supabase
-    .from('waiver_settings')
-    .select('id, version, id_type_options')
-    .eq('is_active', true)
-    .maybeSingle();
+    .from('id_type_options')
+    .select('id, value, label, is_active, sort_order')
+    .order('sort_order', { ascending: true });
 
-  if (error || !data) {
-    return null;
-  }
+  if (error || !data) return [];
 
-  const settings = data as unknown as {
+  return (data as unknown as Array<{
     id: string;
-    version: string;
-    id_type_options?: string[] | null;
-  };
+    value: string;
+    label: string;
+    is_active: boolean;
+    sort_order: number;
+  }>).map((row) => ({
+    id: row.id,
+    value: row.value,
+    label: row.label,
+    isActive: row.is_active,
+    sortOrder: row.sort_order,
+  }));
+}
 
-  return {
-    id: settings.id,
-    version: settings.version,
-    idTypeOptions: Array.isArray(settings.id_type_options) ? settings.id_type_options : [],
-  };
+// Returns only active options sorted by sort_order — for the customer intake form.
+export async function getActiveIdTypeOptions(): Promise<IdTypeOption[]> {
+  const supabase = await createServerSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('id_type_options')
+    .select('id, value, label, is_active, sort_order')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true });
+
+  if (error || !data) return [];
+
+  return (data as unknown as Array<{
+    id: string;
+    value: string;
+    label: string;
+    is_active: boolean;
+    sort_order: number;
+  }>).map((row) => ({
+    id: row.id,
+    value: row.value,
+    label: row.label,
+    isActive: row.is_active,
+    sortOrder: row.sort_order,
+  }));
 }
