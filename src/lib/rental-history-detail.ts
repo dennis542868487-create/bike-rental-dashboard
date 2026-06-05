@@ -9,6 +9,10 @@ export type RentalHistoryDetail = {
   finalFee: string;
   notes: string;
   status: string;
+  // ID info — sourced from customer_submissions via submission_id FK
+  submissionId: string | null;
+  idType: string;
+  idLast4: string;
 };
 
 export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryDetail | null> {
@@ -16,7 +20,9 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
 
   const { data, error } = await supabase
     .from('rentals')
-    .select('id, rental_number, status, completed_at, final_fee, notes, customer:customers(first_name, last_name), rental_bikes(unassigned_at, bike:bikes(bike_number))')
+    .select(
+      'id, rental_number, status, completed_at, final_fee, notes, submission_id, customer:customers(first_name, last_name), rental_bikes(unassigned_at, bike:bikes(bike_number)), submission:customer_submissions(id, id_type, id_last4)',
+    )
     .eq('id', id)
     .in('status', ['completed', 'voided'])
     .maybeSingle();
@@ -32,6 +38,7 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
     completed_at?: string | null;
     final_fee?: number | null;
     notes?: string | null;
+    submission_id?: string | null;
     customer?: {
       first_name?: string | null;
       last_name?: string | null;
@@ -42,6 +49,11 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
         bike_number?: string | null;
       } | null;
     }> | null;
+    submission?: {
+      id?: string | null;
+      id_type?: string | null;
+      id_last4?: string | null;
+    } | null;
   };
 
   const bikeNumbers =
@@ -59,5 +71,8 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
     finalFee: rental.final_fee ? `$${rental.final_fee}` : '$0',
     notes: rental.notes ?? '',
     status: rental.status,
+    submissionId: rental.submission?.id ?? rental.submission_id ?? null,
+    idType: rental.submission?.id_type ?? '',
+    idLast4: rental.submission?.id_last4 ?? '',
   };
 }
