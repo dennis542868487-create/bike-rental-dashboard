@@ -5,8 +5,10 @@ import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export type UpdateActiveRentalInput = {
   rentalId: string;
-  expectedReturnTime: string;
-  estimatedFee: number;
+  startTime?: string;
+  returnTime?: string;
+  clearReturnTime?: boolean;
+  amountCollected?: number;
   notes?: string;
 };
 
@@ -23,9 +25,11 @@ export async function updateActiveRentalAction(input: UpdateActiveRentalInput) {
     'update_active_rental',
     {
       p_rental_id: input.rentalId,
-      p_expected_return_time: input.expectedReturnTime || null,
-      p_estimated_fee: input.estimatedFee,
+      p_start_time: input.startTime || null,
+      p_return_time: input.returnTime || null,
+      p_amount_collected: input.amountCollected ?? null,
       p_notes: input.notes ?? null,
+      p_clear_return_time: input.clearReturnTime ?? false,
     } as never,
   );
 
@@ -38,6 +42,6 @@ export async function updateActiveRentalAction(input: UpdateActiveRentalInput) {
 
   return {
     ok: true,
-    message: 'Active rental updated.',
+    message: 'Rental updated.',
   };
 }

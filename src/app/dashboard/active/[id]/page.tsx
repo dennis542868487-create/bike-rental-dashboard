@@ -9,6 +9,7 @@ import { CreateIncidentReportForm } from '@/components/create-incident-report-fo
 import { PageHeader } from '@/components/page-header';
 import { getActiveRentalDetail } from '@/lib/active-rental-detail';
 import { getAvailableBikes } from '@/lib/available-bikes';
+import { formatDateTime } from '@/lib/format-date-time';
 
 type ActiveRentalDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -23,6 +24,10 @@ export default async function ActiveRentalDetailPage({ params }: ActiveRentalDet
     notFound();
   }
 
+  const displayAmount = rental.amountCollected && rental.amountCollected !== '0'
+    ? `$${rental.amountCollected}`
+    : '—';
+
   return (
     <main style={{ display: 'grid', gap: 20 }}>
       <DashboardBackLink href="/dashboard/active" label="Back to Active Rentals" />
@@ -36,9 +41,15 @@ export default async function ActiveRentalDetailPage({ params }: ActiveRentalDet
           <div><strong>Rental Number:</strong> {rental.rentalNumber}</div>
           <div><strong>Customer:</strong> {rental.customerName}</div>
           <div><strong>Phone:</strong> {rental.phoneNumber}</div>
-          <div><strong>Start Time:</strong> {rental.startTime}</div>
-          <div><strong>Return Time:</strong> {rental.expectedReturnTime}</div>
-          <div><strong>Amount Collected (Est.):</strong> {rental.estimatedFee}</div>
+          {rental.submittedAt ? (
+            <div><strong>Customer Submitted At:</strong> {formatDateTime(rental.submittedAt)}</div>
+          ) : null}
+          <div><strong>Start Time:</strong> {formatDateTime(rental.startTime)}</div>
+          <div>
+            <strong>Return / Completion Time:</strong>{' '}
+            {rental.returnTime ? formatDateTime(rental.returnTime) : 'Not completed yet'}
+          </div>
+          <div><strong>Amount Collected:</strong> {displayAmount}</div>
         </DetailInfoGrid>
 
         <div>
@@ -52,7 +63,13 @@ export default async function ActiveRentalDetailPage({ params }: ActiveRentalDet
         </div>
       </DetailSection>
 
-      <ActiveRentalEditForm rentalId={rental.id} />
+      <ActiveRentalEditForm
+        rentalId={rental.id}
+        currentStartTime={rental.startTime}
+        currentReturnTime={rental.returnTime}
+        currentAmountCollected={rental.amountCollected}
+        currentNotes={rental.notes}
+      />
       <ActiveRentalBikeSwapForm rentalId={rental.id} currentBikeNumbers={rental.bikeNumbers} availableBikes={availableBikes} />
       <CreateIncidentReportForm
         rentalId={rental.id}

@@ -7,9 +7,10 @@ export type ActiveRentalDetail = {
   phoneNumber: string;
   bikeIds: string[];
   bikeNumbers: string[];
+  submittedAt: string | null;
   startTime: string;
-  expectedReturnTime: string;
-  estimatedFee: string;
+  returnTime: string | null;
+  amountCollected: string;
   notes: string;
 };
 
@@ -18,7 +19,12 @@ export async function getActiveRentalDetail(id: string): Promise<ActiveRentalDet
 
   const { data, error } = await supabase
     .from('rentals')
-    .select('id, rental_number, start_time, expected_return_time, estimated_fee, notes, customer:customers(first_name, last_name, phone_number), rental_bikes(unassigned_at, bike:bikes(id, bike_number))')
+    .select(
+      'id, rental_number, start_time, actual_return_time, final_fee, notes, ' +
+      'customer:customers(first_name, last_name, phone_number), ' +
+      'rental_bikes(unassigned_at, bike:bikes(id, bike_number)), ' +
+      'submission:customer_submissions!submission_id(submitted_at)',
+    )
     .eq('id', id)
     .eq('status', 'active')
     .maybeSingle();
@@ -31,8 +37,8 @@ export async function getActiveRentalDetail(id: string): Promise<ActiveRentalDet
     id: string;
     rental_number: string;
     start_time: string;
-    expected_return_time: string;
-    estimated_fee: number | null;
+    actual_return_time: string | null;
+    final_fee: number | null;
     notes: string | null;
     customer?: {
       first_name?: string | null;
@@ -46,10 +52,16 @@ export async function getActiveRentalDetail(id: string): Promise<ActiveRentalDet
         bike_number?: string | null;
       } | null;
     }> | null;
+    submission?: {
+      submitted_at?: string | null;
+    } | null;
   };
 
   const assignedBikes =
-    rental.rental_bikes?.filter((item) => item.unassigned_at === null).map((item) => item.bike).filter(Boolean) ?? [];
+    rental.rental_bikes
+      ?.filter((item) => item.unassigned_at === null)
+      .map((item) => item.bike)
+      .filter(Boolean) ?? [];
 
   return {
     id: rental.id,
@@ -58,9 +70,10 @@ export async function getActiveRentalDetail(id: string): Promise<ActiveRentalDet
     phoneNumber: rental.customer?.phone_number ?? '',
     bikeIds: assignedBikes.map((bike) => bike?.id ?? '').filter(Boolean),
     bikeNumbers: assignedBikes.map((bike) => bike?.bike_number ?? '').filter(Boolean),
+    submittedAt: rental.submission?.submitted_at ?? null,
     startTime: rental.start_time,
-    expectedReturnTime: rental.expected_return_time,
-    estimatedFee: rental.estimated_fee != null ? `$${rental.estimated_fee}` : '—',
+    returnTime: rental.actual_return_time ?? null,
+    amountCollected: rental.final_fee != null ? String(rental.final_fee) : '0',
     notes: rental.notes ?? '',
   };
 }

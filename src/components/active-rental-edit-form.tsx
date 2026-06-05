@@ -4,11 +4,29 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { updateActiveRentalAction } from '@/actions/update-active-rental';
 
+function toDatetimeLocalValue(iso: string | null | undefined): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 type ActiveRentalEditFormProps = {
   rentalId: string;
+  currentStartTime?: string | null;
+  currentReturnTime?: string | null;
+  currentAmountCollected?: string | null;
+  currentNotes?: string | null;
 };
 
-export function ActiveRentalEditForm({ rentalId }: ActiveRentalEditFormProps) {
+export function ActiveRentalEditForm({
+  rentalId,
+  currentStartTime,
+  currentReturnTime,
+  currentAmountCollected,
+  currentNotes,
+}: ActiveRentalEditFormProps) {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
@@ -20,18 +38,44 @@ export function ActiveRentalEditForm({ rentalId }: ActiveRentalEditFormProps) {
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
-          <div>Return Time</div>
-          <input id="activeExpectedReturnTime" type="datetime-local" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+          <div>Start Time</div>
+          <input
+            id="activeStartTime"
+            type="datetime-local"
+            defaultValue={toDatetimeLocalValue(currentStartTime)}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+          />
         </label>
         <label>
-          <div>Amount Collected (Estimated)</div>
-          <input id="activeEstimatedFee" type="number" min="0" step="0.01" defaultValue="0" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+          <div>Return / Completion Time</div>
+          <input
+            id="activeReturnTime"
+            type="datetime-local"
+            defaultValue={toDatetimeLocalValue(currentReturnTime)}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+          />
+        </label>
+        <label>
+          <div>Amount Collected</div>
+          <input
+            id="activeAmountCollected"
+            type="number"
+            min="0"
+            step="0.01"
+            defaultValue={currentAmountCollected ?? '0'}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+          />
         </label>
       </div>
 
       <label>
         <div>Notes</div>
-        <textarea id="activeRentalNotes" placeholder="Update notes for this active rental" style={{ width: '100%', minHeight: 100, padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+        <textarea
+          id="activeRentalNotes"
+          defaultValue={currentNotes ?? ''}
+          placeholder="Notes for this rental"
+          style={{ width: '100%', minHeight: 100, padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+        />
       </label>
 
       {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
@@ -39,15 +83,17 @@ export function ActiveRentalEditForm({ rentalId }: ActiveRentalEditFormProps) {
       <button
         type="button"
         onClick={() => {
-          const expectedReturnTime = (document.getElementById('activeExpectedReturnTime') as HTMLInputElement | null)?.value ?? '';
-          const estimatedFee = Number((document.getElementById('activeEstimatedFee') as HTMLInputElement | null)?.value ?? 0);
+          const startTime = (document.getElementById('activeStartTime') as HTMLInputElement | null)?.value ?? '';
+          const returnTime = (document.getElementById('activeReturnTime') as HTMLInputElement | null)?.value ?? '';
+          const amountCollectedRaw = (document.getElementById('activeAmountCollected') as HTMLInputElement | null)?.value ?? '';
           const notes = (document.getElementById('activeRentalNotes') as HTMLTextAreaElement | null)?.value ?? '';
 
           startTransition(async () => {
             const result = await updateActiveRentalAction({
               rentalId,
-              expectedReturnTime,
-              estimatedFee,
+              startTime: startTime || undefined,
+              returnTime: returnTime || undefined,
+              amountCollected: amountCollectedRaw !== '' ? Number(amountCollectedRaw) : undefined,
               notes,
             });
 
