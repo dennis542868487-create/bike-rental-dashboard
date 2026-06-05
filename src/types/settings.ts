@@ -6,19 +6,9 @@ export type SettingsEntry = {
 
 export const settingsEntries: SettingsEntry[] = [
   {
-    id: 'waiver',
-    title: 'Waiver Settings',
-    description: 'Manage waiver text, instructions, and versioning.',
-  },
-  {
-    id: 'id-types',
-    title: 'ID Type Options',
-    description: 'Control the ID types available in the customer intake form.',
-  },
-  {
-    id: 'business',
-    title: 'Business Settings',
-    description: 'Review core business defaults such as shop identity, timezone, and currency.',
+    id: 'customer-form',
+    title: 'Customer Form Settings',
+    description: 'Customize the public rental form title, instructions, ID options, waiver text, and success message.',
   },
   {
     id: 'users',

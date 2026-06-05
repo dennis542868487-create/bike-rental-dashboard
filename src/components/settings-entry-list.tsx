@@ -6,6 +6,7 @@ type SettingsEntryListProps = {
 };
 
 const entryHrefMap: Record<string, string> = {
+  'customer-form': '/dashboard/settings/customer-form',
   users: '/dashboard/settings/users',
   waiver: '/dashboard/settings/waiver',
   'id-types': '/dashboard/settings/id-types',

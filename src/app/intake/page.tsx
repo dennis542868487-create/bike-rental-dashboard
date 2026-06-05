@@ -25,10 +25,10 @@ export default async function IntakePage() {
         {/* Page title — simple, no brand section */}
         <div style={{ marginBottom: 20, paddingLeft: 4 }}>
           <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#111827' }}>
-            {businessSettings.businessName} Rental Form
+            {businessSettings.formTitle}
           </h1>
           <p style={{ margin: '6px 0 0', fontSize: 14, color: '#6b7280' }}>
-            Please complete all required fields before renting your bike.
+            {businessSettings.formIntro}
           </p>
         </div>
 

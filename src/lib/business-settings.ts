@@ -10,6 +10,8 @@ export type BusinessSettings = {
   address: string;
   defaultRentalDurationHours: number | null;
   operationsNote: string;
+  formTitle: string;
+  formIntro: string;
 };
 
 const FALLBACK: BusinessSettings = {
@@ -22,6 +24,8 @@ const FALLBACK: BusinessSettings = {
   address: '',
   defaultRentalDurationHours: null,
   operationsNote: '',
+  formTitle: 'Wander Bike Rental Form',
+  formIntro: 'Please complete this form before renting your bike.',
 };
 
 export async function getBusinessSettings(): Promise<BusinessSettings> {
@@ -29,7 +33,7 @@ export async function getBusinessSettings(): Promise<BusinessSettings> {
 
   const { data, error } = await supabase
     .from('business_settings')
-    .select('id, business_name, timezone, primary_currency, phone, email, address, default_rental_duration_hours, operations_note')
+    .select('id, business_name, timezone, primary_currency, phone, email, address, default_rental_duration_hours, operations_note, form_title, form_intro')
     .maybeSingle();
 
   if (error || !data) return FALLBACK;
@@ -44,6 +48,8 @@ export async function getBusinessSettings(): Promise<BusinessSettings> {
     address?: string | null;
     default_rental_duration_hours?: number | null;
     operations_note?: string | null;
+    form_title?: string | null;
+    form_intro?: string | null;
   };
 
   return {
@@ -56,5 +62,7 @@ export async function getBusinessSettings(): Promise<BusinessSettings> {
     address: row.address ?? '',
     defaultRentalDurationHours: row.default_rental_duration_hours ?? null,
     operationsNote: row.operations_note ?? '',
+    formTitle: row.form_title ?? `${row.business_name} Rental Form`,
+    formIntro: row.form_intro ?? 'Please complete this form before renting your bike.',
   };
 }

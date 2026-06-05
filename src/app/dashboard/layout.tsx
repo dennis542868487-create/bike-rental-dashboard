@@ -16,7 +16,7 @@ const navItems = [
 ];
 
 const externalLinks = [
-  { href: '/intake', label: 'Customer Form ↗' },
+  { href: '/intake', label: 'Open Customer Form ↗' },
 ];
 
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {

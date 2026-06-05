@@ -2,6 +2,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { ensureStaffActionAccess } from '@/lib/action-auth';
+import { createAdminSupabaseClient } from '@/lib/supabase-admin';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export type MorningCheckSubmitItem = {
@@ -54,10 +55,15 @@ export async function submitMorningCheckAction(input: {
     };
   }
 
+  // Use admin client for storage upload: the signatures bucket INSERT policy uses
+  // `and false` to block direct client uploads, but admin (service role) bypasses RLS.
+  const adminSupabase = createAdminSupabaseClient();
+  // Use server client (user session JWT) for the RPC so auth.uid() resolves correctly.
   const supabase = await createServerSupabaseClient();
+
   const signaturePath = `morning-check/${randomUUID()}.png`;
 
-  const { error: uploadError } = await supabase.storage
+  const { error: uploadError } = await adminSupabase.storage
     .from('signatures')
     .upload(signaturePath, parsedSignature.buffer, {
       contentType: parsedSignature.mimeType,
@@ -65,9 +71,10 @@ export async function submitMorningCheckAction(input: {
     });
 
   if (uploadError) {
+    console.error('[morning-check] Signature upload error:', uploadError.message, uploadError);
     return {
       ok: false,
-      message: 'Signature upload failed. Please try again.',
+      message: `Signature upload failed: ${uploadError.message}`,
     };
   }
 
@@ -89,7 +96,7 @@ export async function submitMorningCheckAction(input: {
   );
 
   if (error) {
-    await supabase.storage.from('signatures').remove([signaturePath]);
+    await adminSupabase.storage.from('signatures').remove([signaturePath]);
 
     return {
       ok: false,
