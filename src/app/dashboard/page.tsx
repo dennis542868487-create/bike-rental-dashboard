@@ -14,6 +14,7 @@ const quickLinks = [
   { label: 'Run Morning Check', href: '/dashboard/morning-check' },
   { label: 'Open Reports', href: '/dashboard/reports' },
   { label: 'Manage Settings', href: '/dashboard/settings' },
+  { label: 'Customer Intake Form ↗', href: '/intake' },
 ];
 
 export default async function DashboardPage() {
@@ -51,6 +52,16 @@ export default async function DashboardPage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#f9fafb', display: 'grid', gap: 8 }}>
+        <h2 style={{ margin: 0, fontSize: 16 }}>Customer Form URL</h2>
+        <p style={{ margin: 0, fontSize: 13, color: '#6b7280' }}>
+          Share this link with customers before their rental. Also reachable via <code>/form</code>, <code>/waiver</code>, or <code>/rent</code>.
+        </p>
+        <code style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: '8px 12px', fontSize: 14, color: '#111827', wordBreak: 'break-all' }}>
+          /intake
+        </code>
       </section>
     </main>
   );

@@ -14,6 +14,10 @@ const navItems = [
   { href: '/dashboard/settings', label: 'Settings' },
 ];
 
+const externalLinks = [
+  { href: '/intake', label: 'Customer Form ↗' },
+];
+
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [{ profile }, businessSettings] = await Promise.all([
     requireDashboardAccess(),
@@ -29,6 +33,12 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
         <nav style={{ display: 'grid', gap: 10 }}>
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} style={{ color: '#111827', textDecoration: 'none' }}>
+              {item.label}
+            </Link>
+          ))}
+          <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb', margin: '4px 0' }} />
+          {externalLinks.map((item) => (
+            <Link key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280', textDecoration: 'none', fontSize: 14 }}>
               {item.label}
             </Link>
           ))}
