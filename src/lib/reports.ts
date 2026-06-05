@@ -206,6 +206,143 @@ export async function getReportMetrics(): Promise<ReportMetric[]> {
   ];
 }
 
+// ─── Structured summary for the redesigned Reports page ───────────────────
+
+export type ReportRecentRental = {
+  id: string;
+  rentalNumber: string;
+  customerName: string;
+  bikeNumbers: string;
+  completedAt: string;
+  fee: string;
+  paymentStatus: string;
+};
+
+export type ReportSummary = {
+  periods: {
+    today: { revenue: string; completedRentals: number };
+    thisMonth: { revenue: string; completedRentals: number };
+    thisYear: { revenue: string; completedRentals: number };
+  };
+  current: {
+    activeRentals: number;
+    pendingSubmissions: number;
+    bikesInMaintenance: number;
+  };
+  allTime: {
+    completedRentals: number;
+  };
+  payments: {
+    paid: number;
+    unpaid: number;
+    waived: number;
+    refunded: number;
+  };
+  operations: {
+    maintenanceNeeded: number;
+    incidentFlags: number;
+  };
+  recentRentals: ReportRecentRental[];
+};
+
+export async function getReportSummary(): Promise<ReportSummary> {
+  const supabase = await createServerSupabaseClient();
+  const { startOfDay, startOfMonth, startOfYear } = getUtcRangeStarts();
+
+  const [
+    { count: dailyCount },
+    { count: monthlyCount },
+    { count: yearlyCount },
+    { data: dailyRevenueRows },
+    { data: monthlyRevenueRows },
+    { data: yearlyRevenueRows },
+    { count: paidCount },
+    { count: unpaidCount },
+    { count: waivedCount },
+    { count: refundedCount },
+    { count: maintenanceNeededCount },
+    { count: incidentFlagCount },
+    { count: pendingSubmissionCount },
+    { count: activeRentalCount },
+    { count: completedTotalCount },
+    { count: bikesInMaintenanceCount },
+    { data: recentRentalsData },
+  ] = await Promise.all([
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').gte('completed_at', startOfDay),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').gte('completed_at', startOfMonth),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').gte('completed_at', startOfYear),
+    supabase.from('rentals').select('final_fee').eq('status', 'completed').gte('completed_at', startOfDay),
+    supabase.from('rentals').select('final_fee').eq('status', 'completed').gte('completed_at', startOfMonth),
+    supabase.from('rentals').select('final_fee').eq('status', 'completed').gte('completed_at', startOfYear),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').eq('payment_status', 'paid'),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').eq('payment_status', 'unpaid'),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').eq('payment_status', 'waived'),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').eq('payment_status', 'refunded'),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').eq('maintenance_needed', true),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed').eq('incident_flag', true),
+    supabase.from('customer_submissions').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+    supabase.from('rentals').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
+    supabase.from('bikes').select('*', { count: 'exact', head: true }).eq('status', 'maintenance').eq('is_archived', false),
+    supabase
+      .from('rentals')
+      .select('id, rental_number, completed_at, final_fee, payment_status, customer:customers(first_name, last_name), rental_bikes(bike:bikes(bike_number))')
+      .eq('status', 'completed')
+      .order('completed_at', { ascending: false })
+      .limit(8),
+  ]);
+
+  const sum = (rows: Array<{ final_fee?: number | null }>) =>
+    rows.reduce((acc, r) => acc + Number(r.final_fee ?? 0), 0);
+
+  const daily = (dailyRevenueRows ?? []) as Array<{ final_fee?: number | null }>;
+  const monthly = (monthlyRevenueRows ?? []) as Array<{ final_fee?: number | null }>;
+  const yearly = (yearlyRevenueRows ?? []) as Array<{ final_fee?: number | null }>;
+
+  const recentRows = (recentRentalsData ?? []) as Array<{
+    id: string;
+    rental_number: string;
+    completed_at: string;
+    final_fee?: number | null;
+    payment_status?: string | null;
+    customer?: { first_name?: string | null; last_name?: string | null } | null;
+    rental_bikes?: Array<{ bike?: { bike_number?: string | null } | null }> | null;
+  }>;
+
+  return {
+    periods: {
+      today: { revenue: formatCurrency(sum(daily)), completedRentals: dailyCount ?? 0 },
+      thisMonth: { revenue: formatCurrency(sum(monthly)), completedRentals: monthlyCount ?? 0 },
+      thisYear: { revenue: formatCurrency(sum(yearly)), completedRentals: yearlyCount ?? 0 },
+    },
+    current: {
+      activeRentals: activeRentalCount ?? 0,
+      pendingSubmissions: pendingSubmissionCount ?? 0,
+      bikesInMaintenance: bikesInMaintenanceCount ?? 0,
+    },
+    allTime: { completedRentals: completedTotalCount ?? 0 },
+    payments: {
+      paid: paidCount ?? 0,
+      unpaid: unpaidCount ?? 0,
+      waived: waivedCount ?? 0,
+      refunded: refundedCount ?? 0,
+    },
+    operations: {
+      maintenanceNeeded: maintenanceNeededCount ?? 0,
+      incidentFlags: incidentFlagCount ?? 0,
+    },
+    recentRentals: recentRows.map((row) => ({
+      id: row.id,
+      rentalNumber: row.rental_number,
+      customerName: `${row.customer?.first_name ?? ''} ${row.customer?.last_name ?? ''}`.trim() || '—',
+      bikeNumbers: row.rental_bikes?.map((rb) => rb.bike?.bike_number ?? '').filter(Boolean).join(', ') ?? '—',
+      completedAt: row.completed_at,
+      fee: row.final_fee != null ? formatCurrency(Number(row.final_fee)) : '$0.00',
+      paymentStatus: row.payment_status ?? 'unpaid',
+    })),
+  };
+}
+
 export async function getReportMetricGroups(): Promise<ReportMetricGroup[]> {
   const items = await getReportMetrics();
 

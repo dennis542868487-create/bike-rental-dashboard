@@ -11,8 +11,6 @@ export type StartRentalInput = {
   trailerQuantity: number;
   bikeIds?: string[];
   startTime: string;
-  expectedReturnTime: string;
-  estimatedFee: number;
   notes?: string;
 };
 
@@ -24,10 +22,9 @@ export async function startRentalAction(input: StartRentalInput) {
   }
 
   const resolvedStartTime = input.startTime || new Date().toISOString();
-
-  if (!input.expectedReturnTime) {
-    return { ok: false as const, message: 'Expected return time is required.' };
-  }
+  // Default expected return time to start time if not provided.
+  // The DB requires expected_return_time >= start_time, which this satisfies.
+  const resolvedExpectedReturnTime = resolvedStartTime;
 
   const supabase = await createServerSupabaseClient();
 
@@ -56,8 +53,8 @@ export async function startRentalAction(input: StartRentalInput) {
       p_trailer_quantity: input.trailerQuantity,
       p_bike_ids: input.bikeIds ?? [],
       p_start_time: resolvedStartTime,
-      p_expected_return_time: input.expectedReturnTime,
-      p_estimated_fee: input.estimatedFee,
+      p_expected_return_time: resolvedExpectedReturnTime,
+      p_estimated_fee: 0,
       p_notes: input.notes ?? null,
     } as never,
   );

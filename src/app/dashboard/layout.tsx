@@ -11,6 +11,7 @@ const navItems = [
   { href: '/dashboard/history', label: 'Rental History' },
   { href: '/dashboard/reports', label: 'Reports' },
   { href: '/dashboard/morning-check', label: 'Morning Check' },
+  { href: '/dashboard/morning-check/history', label: 'Morning Check History' },
   { href: '/dashboard/settings', label: 'Settings' },
 ];
 

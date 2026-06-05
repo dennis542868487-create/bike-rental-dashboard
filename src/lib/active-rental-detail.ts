@@ -7,8 +7,9 @@ export type ActiveRentalDetail = {
   phoneNumber: string;
   bikeIds: string[];
   bikeNumbers: string[];
+  startTime: string;
   expectedReturnTime: string;
-  finalFee: string;
+  estimatedFee: string;
   notes: string;
 };
 
@@ -17,7 +18,7 @@ export async function getActiveRentalDetail(id: string): Promise<ActiveRentalDet
 
   const { data, error } = await supabase
     .from('rentals')
-    .select('id, rental_number, expected_return_time, final_fee, notes, customer:customers(first_name, last_name, phone_number), rental_bikes(unassigned_at, bike:bikes(id, bike_number))')
+    .select('id, rental_number, start_time, expected_return_time, estimated_fee, notes, customer:customers(first_name, last_name, phone_number), rental_bikes(unassigned_at, bike:bikes(id, bike_number))')
     .eq('id', id)
     .eq('status', 'active')
     .maybeSingle();
@@ -29,8 +30,9 @@ export async function getActiveRentalDetail(id: string): Promise<ActiveRentalDet
   const rental = data as unknown as {
     id: string;
     rental_number: string;
+    start_time: string;
     expected_return_time: string;
-    final_fee: number | null;
+    estimated_fee: number | null;
     notes: string | null;
     customer?: {
       first_name?: string | null;
@@ -56,8 +58,9 @@ export async function getActiveRentalDetail(id: string): Promise<ActiveRentalDet
     phoneNumber: rental.customer?.phone_number ?? '',
     bikeIds: assignedBikes.map((bike) => bike?.id ?? '').filter(Boolean),
     bikeNumbers: assignedBikes.map((bike) => bike?.bike_number ?? '').filter(Boolean),
+    startTime: rental.start_time,
     expectedReturnTime: rental.expected_return_time,
-    finalFee: rental.final_fee ? `$${rental.final_fee}` : '$0',
+    estimatedFee: rental.estimated_fee != null ? `$${rental.estimated_fee}` : '—',
     notes: rental.notes ?? '',
   };
 }

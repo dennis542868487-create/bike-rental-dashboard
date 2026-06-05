@@ -11,11 +11,25 @@ export default async function IntakePage() {
   ]);
 
   return (
-    <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'start center', padding: 24, background: '#f9fafb' }}>
-      <section style={{ width: '100%', maxWidth: 720, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 16, padding: 24, display: 'grid', gap: 16 }}>
-        <div>
-          <h1 style={{ margin: 0 }}>{businessSettings.businessName} Rental Form</h1>
-          <p style={{ color: '#6b7280' }}>Please complete this form before renting your bike.</p>
+    <main
+      style={{
+        minHeight: '100vh',
+        background: '#f3f4f6',
+        padding: '24px 16px 48px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: 640 }}>
+        {/* Page title — simple, no brand section */}
+        <div style={{ marginBottom: 20, paddingLeft: 4 }}>
+          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#111827' }}>
+            {businessSettings.businessName} Rental Form
+          </h1>
+          <p style={{ margin: '6px 0 0', fontSize: 14, color: '#6b7280' }}>
+            Please complete all required fields before renting your bike.
+          </p>
         </div>
 
         {!waiverSettings ? (
@@ -30,7 +44,7 @@ export default async function IntakePage() {
             idTypeOptions={idTypeOptions}
           />
         )}
-      </section>
+      </div>
     </main>
   );
 }

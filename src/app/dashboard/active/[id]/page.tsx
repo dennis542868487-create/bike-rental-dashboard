@@ -36,8 +36,9 @@ export default async function ActiveRentalDetailPage({ params }: ActiveRentalDet
           <div><strong>Rental Number:</strong> {rental.rentalNumber}</div>
           <div><strong>Customer:</strong> {rental.customerName}</div>
           <div><strong>Phone:</strong> {rental.phoneNumber}</div>
-          <div><strong>Expected Return:</strong> {rental.expectedReturnTime}</div>
-          <div><strong>Current Fee:</strong> {rental.finalFee}</div>
+          <div><strong>Start Time:</strong> {rental.startTime}</div>
+          <div><strong>Return Time:</strong> {rental.expectedReturnTime}</div>
+          <div><strong>Amount Collected (Est.):</strong> {rental.estimatedFee}</div>
         </DetailInfoGrid>
 
         <div>

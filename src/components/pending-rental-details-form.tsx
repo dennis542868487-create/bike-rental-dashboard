@@ -8,10 +8,11 @@ import type { AvailableBikeOption } from '@/lib/available-bikes';
 
 type PendingRentalDetailsFormProps = {
   submissionId: string;
+  submittedAt: string;
   availableBikes: AvailableBikeOption[];
 };
 
-export function PendingRentalDetailsForm({ submissionId, availableBikes }: PendingRentalDetailsFormProps) {
+export function PendingRentalDetailsForm({ submissionId, submittedAt, availableBikes }: PendingRentalDetailsFormProps) {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
@@ -37,17 +38,13 @@ export function PendingRentalDetailsForm({ submissionId, availableBikes }: Pendi
       </div>
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+        <div>
+          <div style={{ fontSize: 14, color: '#6b7280' }}>Customer Submitted At</div>
+          <div style={{ padding: '10px 0', fontSize: 14 }}>{submittedAt}</div>
+        </div>
         <label>
           <div>Start Time</div>
           <input id="startTime" type="datetime-local" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
-        </label>
-        <label>
-          <div>Expected Return Time</div>
-          <input id="expectedReturnTime" type="datetime-local" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
-        </label>
-        <label>
-          <div>Estimated Fee</div>
-          <input id="estimatedFee" type="number" min="0" step="0.01" defaultValue="0" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
         </label>
       </div>
 
@@ -77,8 +74,6 @@ export function PendingRentalDetailsForm({ submissionId, availableBikes }: Pendi
             const kidBikeQuantity = Number((document.getElementById('kidBikeQuantity') as HTMLInputElement | null)?.value ?? 0);
             const trailerQuantity = Number((document.getElementById('trailerQuantity') as HTMLInputElement | null)?.value ?? 0);
             const startTime = (document.getElementById('startTime') as HTMLInputElement | null)?.value ?? '';
-            const expectedReturnTime = (document.getElementById('expectedReturnTime') as HTMLInputElement | null)?.value ?? '';
-            const estimatedFee = Number((document.getElementById('estimatedFee') as HTMLInputElement | null)?.value ?? 0);
             const notes = (document.getElementById('staffNotes') as HTMLTextAreaElement | null)?.value ?? '';
             const bikeIds = Array.from((document.getElementById('bikeIds') as HTMLSelectElement | null)?.selectedOptions ?? []).map((option) => option.value);
 
@@ -90,8 +85,6 @@ export function PendingRentalDetailsForm({ submissionId, availableBikes }: Pendi
                 trailerQuantity,
                 bikeIds,
                 startTime,
-                expectedReturnTime,
-                estimatedFee,
                 notes,
               });
 

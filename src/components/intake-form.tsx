@@ -18,10 +18,56 @@ type IntakeFormProps = {
   idTypeOptions: IdTypeOption[];
 };
 
+// Shared styles to keep all fields visually consistent.
+const field: React.CSSProperties = {
+  width: '100%',
+  padding: '14px 12px',
+  border: '1px solid #d1d5db',
+  borderRadius: 10,
+  fontSize: 16,          // 16px prevents iOS auto-zoom
+  boxSizing: 'border-box',
+  background: '#fff',
+  color: '#111827',
+  lineHeight: 1.4,
+};
+
+const label: React.CSSProperties = {
+  display: 'block',
+  fontWeight: 500,
+  fontSize: 14,
+  color: '#374151',
+  marginBottom: 6,
+};
+
+const card: React.CSSProperties = {
+  border: '1px solid #e5e7eb',
+  borderRadius: 12,
+  padding: 20,
+  background: '#fff',
+  display: 'grid',
+  gap: 16,
+};
+
+const sectionTitle: React.CSSProperties = {
+  margin: 0,
+  fontSize: 15,
+  fontWeight: 600,
+  color: '#111827',
+  paddingBottom: 4,
+  borderBottom: '1px solid #f3f4f6',
+};
+
+const errorMsg: React.CSSProperties = {
+  color: '#dc2626',
+  fontSize: 13,
+  marginTop: 4,
+};
+
 export function IntakeForm({ waiverVersion, waiverText, customerInstructions, idTypeOptions }: IntakeFormProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
   const [isPending, startTransition] = useTransition();
+
   const {
     register,
     handleSubmit,
@@ -48,83 +94,182 @@ export function IntakeForm({ waiverVersion, waiverText, customerInstructions, id
         setMessage(result.message);
         setMessageType(result.ok ? 'success' : 'error');
       }
-
       if (result?.ok) {
         reset();
       }
     });
   };
 
+  const isLoading = isSubmitting || isPending;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'grid', gap: 16 }}>
-      <div style={{ display: 'grid', gap: 12 }}>
-        <label>
-          <div>First Name</div>
-          <input {...register('firstName', { required: 'First name is required' })} type="text" style={{ width: '100%', padding: 12, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
-          {errors.firstName ? <p style={{ color: '#dc2626' }}>{errors.firstName.message}</p> : null}
-        </label>
-        <label>
-          <div>Last Name</div>
-          <input {...register('lastName', { required: 'Last name is required' })} type="text" style={{ width: '100%', padding: 12, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
-          {errors.lastName ? <p style={{ color: '#dc2626' }}>{errors.lastName.message}</p> : null}
-        </label>
-        <label>
-          <div>Phone Number</div>
-          <input {...register('phoneNumber', { required: 'Phone number is required' })} type="tel" style={{ width: '100%', padding: 12, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
-          {errors.phoneNumber ? <p style={{ color: '#dc2626' }}>{errors.phoneNumber.message}</p> : null}
-        </label>
-        <label>
-          <div>Email</div>
-          <input {...register('email', { required: 'Email is required' })} type="email" style={{ width: '100%', padding: 12, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
-          {errors.email ? <p style={{ color: '#dc2626' }}>{errors.email.message}</p> : null}
-        </label>
-        <label>
-          <div>Photo ID Type</div>
-          <select {...register('idType')} style={{ width: '100%', padding: 12, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}>
+
+      {/* ── Section 1: Customer Info ─────────────────────────────── */}
+      <div style={card}>
+        <h2 style={sectionTitle}>Customer Info</h2>
+
+        {/* First + Last name side by side on wider screens */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+          <div>
+            <label style={label}>First Name</label>
+            <input
+              {...register('firstName', { required: 'First name is required' })}
+              type="text"
+              autoComplete="given-name"
+              style={field}
+            />
+            {errors.firstName ? <p style={errorMsg}>{errors.firstName.message}</p> : null}
+          </div>
+          <div>
+            <label style={label}>Last Name</label>
+            <input
+              {...register('lastName', { required: 'Last name is required' })}
+              type="text"
+              autoComplete="family-name"
+              style={field}
+            />
+            {errors.lastName ? <p style={errorMsg}>{errors.lastName.message}</p> : null}
+          </div>
+        </div>
+
+        <div>
+          <label style={label}>Phone Number</label>
+          <input
+            {...register('phoneNumber', { required: 'Phone number is required' })}
+            type="tel"
+            autoComplete="tel"
+            style={field}
+          />
+          {errors.phoneNumber ? <p style={errorMsg}>{errors.phoneNumber.message}</p> : null}
+        </div>
+
+        <div>
+          <label style={label}>
+            Email{' '}
+            <span style={{ fontWeight: 400, color: '#9ca3af' }}>(optional)</span>
+          </label>
+          <input
+            {...register('email')}
+            type="email"
+            autoComplete="email"
+            style={field}
+          />
+        </div>
+      </div>
+
+      {/* ── Section 2: Photo ID ──────────────────────────────────── */}
+      <div style={card}>
+        <h2 style={sectionTitle}>Photo ID</h2>
+
+        <div>
+          <label style={label}>ID Type</label>
+          <select {...register('idType')} style={field}>
             {idTypeOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>
-        </label>
-        <label>
-          <div>Photo ID Number</div>
-          <input {...register('idNumber', { required: 'Photo ID number is required' })} type="text" style={{ width: '100%', padding: 12, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
-          {errors.idNumber ? <p style={{ color: '#dc2626' }}>{errors.idNumber.message}</p> : null}
-        </label>
-      </div>
-
-      <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#f9fafb', display: 'grid', gap: 16 }}>
-        <div>
-          <strong>Waiver ({waiverVersion})</strong>
-          {customerInstructions ? <p style={{ color: '#6b7280' }}>{customerInstructions}</p> : null}
-          <p style={{ color: '#6b7280', whiteSpace: 'pre-wrap' }}>{waiverText}</p>
         </div>
 
         <div>
-          <strong>Signature</strong>
-          <div style={{ marginTop: 8 }}>
-            <Controller
-              control={control}
-              name="signatureDataUrl"
-              rules={{ required: 'Signature is required' }}
-              render={({ field }) => <SignaturePadInput value={field.value} onChange={field.onChange} />}
-            />
-            {errors.signatureDataUrl ? <p style={{ color: '#dc2626' }}>{errors.signatureDataUrl.message}</p> : null}
+          <label style={label}>ID Number</label>
+          <input
+            {...register('idNumber', { required: 'Photo ID number is required' })}
+            type="text"
+            style={field}
+          />
+          {errors.idNumber ? <p style={errorMsg}>{errors.idNumber.message}</p> : null}
+        </div>
+      </div>
+
+      {/* ── Section 3: Waiver & Signature ───────────────────────── */}
+      <div style={card}>
+        <h2 style={sectionTitle}>Waiver &amp; Signature</h2>
+
+        {/* Waiver text */}
+        <div style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: 16, background: '#f9fafb' }}>
+          <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8, color: '#374151' }}>
+            Waiver <span style={{ fontWeight: 400, color: '#9ca3af', fontSize: 12 }}>({waiverVersion})</span>
+          </div>
+          {customerInstructions ? (
+            <p style={{ fontSize: 14, color: '#6b7280', margin: '0 0 10px' }}>{customerInstructions}</p>
+          ) : null}
+          <div
+            style={{
+              maxHeight: 220,
+              overflowY: 'auto',
+              fontSize: 13,
+              color: '#6b7280',
+              lineHeight: 1.6,
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {waiverText}
           </div>
         </div>
 
-        <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <input {...register('waiverAccepted', { required: 'You must accept the waiver' })} type="checkbox" />
-          <span>I have read and agree to the waiver.</span>
+        {/* Signature */}
+        <div>
+          <label style={{ ...label, marginBottom: 0 }}>
+            Staff Signature <span style={{ color: '#dc2626' }}>*</span>
+          </label>
+          <Controller
+            control={control}
+            name="signatureDataUrl"
+            rules={{ required: 'Signature is required' }}
+            render={({ field: f }) => (
+              <SignaturePadInput value={f.value} onChange={f.onChange} />
+            )}
+          />
+          {errors.signatureDataUrl ? <p style={errorMsg}>{errors.signatureDataUrl.message}</p> : null}
+        </div>
+
+        {/* Waiver checkbox */}
+        <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer' }}>
+          <input
+            {...register('waiverAccepted', { required: 'You must accept the waiver' })}
+            type="checkbox"
+            style={{ width: 20, height: 20, marginTop: 2, flexShrink: 0, cursor: 'pointer' }}
+          />
+          <span style={{ fontSize: 14, color: '#374151', lineHeight: 1.5 }}>
+            I have read and agree to the waiver above.
+          </span>
         </label>
-        {errors.waiverAccepted ? <p style={{ color: '#dc2626' }}>{errors.waiverAccepted.message}</p> : null}
+        {errors.waiverAccepted ? <p style={errorMsg}>{errors.waiverAccepted.message}</p> : null}
       </div>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {/* Error / success message */}
+      {message ? (
+        <p style={{ margin: 0, fontSize: 14, color: messageType === 'error' ? '#dc2626' : '#16a34a' }}>
+          {message}
+        </p>
+      ) : null}
 
-      <button type="submit" disabled={isSubmitting || isPending} style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff' }}>
-        {isSubmitting || isPending ? 'Submitting...' : 'Submit Form'}
-      </button>
+      {/* Submit CTA */}
+      <div style={{ display: 'grid', gap: 10 }}>
+        <button
+          type="submit"
+          disabled={isLoading}
+          style={{
+            padding: '16px 24px',
+            borderRadius: 12,
+            border: 'none',
+            background: isLoading ? '#6b7280' : '#111827',
+            color: '#fff',
+            fontSize: 16,
+            fontWeight: 600,
+            cursor: isLoading ? 'not-allowed' : 'pointer',
+            width: '100%',
+            letterSpacing: '0.01em',
+          }}
+        >
+          {isLoading ? 'Submitting…' : 'Submit Rental Form'}
+        </button>
+        <p style={{ margin: 0, textAlign: 'center', fontSize: 13, color: '#9ca3af' }}>
+          Please return the device to staff after submitting.
+        </p>
+      </div>
+
     </form>
   );
 }

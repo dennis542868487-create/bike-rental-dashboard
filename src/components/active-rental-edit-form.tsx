@@ -20,11 +20,11 @@ export function ActiveRentalEditForm({ rentalId }: ActiveRentalEditFormProps) {
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
-          <div>Expected Return Time</div>
+          <div>Return Time</div>
           <input id="activeExpectedReturnTime" type="datetime-local" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
         </label>
         <label>
-          <div>Estimated Fee</div>
+          <div>Amount Collected (Estimated)</div>
           <input id="activeEstimatedFee" type="number" min="0" step="0.01" defaultValue="0" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
         </label>
       </div>

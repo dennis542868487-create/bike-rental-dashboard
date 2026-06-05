@@ -20,11 +20,11 @@ export function CompleteRentalForm({ rentalId }: CompleteRentalFormProps) {
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
-          <div>Actual Return Time</div>
+          <div>Return / Completion Time</div>
           <input id="actualReturnTime" type="datetime-local" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
         </label>
         <label>
-          <div>Final Fee</div>
+          <div>Amount Collected</div>
           <input id="finalFee" type="number" min="0" step="0.01" defaultValue="0" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
         </label>
       </div>

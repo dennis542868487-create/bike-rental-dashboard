@@ -11,7 +11,7 @@ function normalizeIntakeValues(values: IntakeFormValues) {
     firstName: values.firstName.trim(),
     lastName: values.lastName.trim(),
     phoneNumber: values.phoneNumber.trim(),
-    email: values.email.trim().toLowerCase(),
+    email: values.email?.trim().toLowerCase() || null,
     idType: values.idType,
     idNumber: values.idNumber.trim(),
     signatureDataUrl: values.signatureDataUrl.trim(),
@@ -40,7 +40,6 @@ export async function submitIntakeAction(values: IntakeFormValues) {
     !normalizedValues.firstName ||
     !normalizedValues.lastName ||
     !normalizedValues.phoneNumber ||
-    !normalizedValues.email ||
     !normalizedValues.idNumber ||
     !normalizedValues.signatureDataUrl
   ) {

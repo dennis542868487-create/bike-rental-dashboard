@@ -44,7 +44,7 @@ export default async function PendingDetailPage({ params }: PendingDetailPagePro
         </DetailInfoGrid>
       </DetailSection>
 
-      <PendingRentalDetailsForm submissionId={submission.id} availableBikes={availableBikes} />
+      <PendingRentalDetailsForm submissionId={submission.id} submittedAt={submission.submittedAt} availableBikes={availableBikes} />
     </main>
   );
 }

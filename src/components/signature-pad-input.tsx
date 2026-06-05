@@ -15,82 +15,103 @@ export function SignaturePadInput({ value, onChange }: SignaturePadInputProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const context = canvas.getContext('2d');
-    if (!context) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    context.lineCap = 'round';
-    context.lineJoin = 'round';
-    context.lineWidth = 2;
-    context.strokeStyle = '#111827';
-    context.fillStyle = '#ffffff';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = '#111827';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }, []);
 
   const getPoint = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
+    // Scale from rendered CSS pixels to canvas pixel coordinates.
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
     return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
+      x: (event.clientX - rect.left) * scaleX,
+      y: (event.clientY - rect.top) * scaleY,
     };
   };
 
   const startDrawing = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
+    const ctx = canvas?.getContext('2d');
     const point = getPoint(event);
-    if (!canvas || !context || !point) return;
+    if (!canvas || !ctx || !point) return;
 
-    context.beginPath();
-    context.moveTo(point.x, point.y);
+    // Capture pointer so drawing continues even when pointer moves outside the canvas.
+    canvas.setPointerCapture(event.pointerId);
+    ctx.beginPath();
+    ctx.moveTo(point.x, point.y);
     setIsDrawing(true);
   };
 
   const draw = (event: React.PointerEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
-
     const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
+    const ctx = canvas?.getContext('2d');
     const point = getPoint(event);
-    if (!canvas || !context || !point) return;
+    if (!canvas || !ctx || !point) return;
 
-    context.lineTo(point.x, point.y);
-    context.stroke();
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
     onChange(canvas.toDataURL('image/png'));
   };
 
-  const stopDrawing = () => {
+  const stopDrawing = (event: React.PointerEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (canvas) canvas.releasePointerCapture(event.pointerId);
     setIsDrawing(false);
   };
 
   const clearSignature = () => {
     const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
-    if (!canvas || !context) return;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = '#ffffff';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     onChange('');
   };
 
   return (
-    <div style={{ display: 'grid', gap: 8 }}>
+    <div style={{ display: 'grid', gap: 8, marginTop: 4 }}>
       <canvas
         ref={canvasRef}
-        width={640}
-        height={220}
+        width={800}
+        height={160}
         onPointerDown={startDrawing}
         onPointerMove={draw}
         onPointerUp={stopDrawing}
-        onPointerLeave={stopDrawing}
-        style={{ width: '100%', maxWidth: '100%', touchAction: 'none', border: '1px solid #d1d5db', borderRadius: 12, background: '#fff' }}
+        onPointerCancel={stopDrawing}
+        style={{
+          width: '100%',
+          height: 160,
+          touchAction: 'none',
+          border: '1px solid #d1d5db',
+          borderRadius: 10,
+          background: '#fff',
+          cursor: 'crosshair',
+          display: 'block',
+        }}
       />
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
-        <span style={{ color: '#6b7280', fontSize: 14 }}>{value ? 'Signature captured.' : 'Please sign in the box above.'}</span>
-        <button type="button" onClick={clearSignature} style={{ padding: '8px 12px', borderRadius: 10, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer' }}>
-          Clear Signature
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+        <span style={{ color: value ? '#16a34a' : '#6b7280', fontSize: 13 }}>
+          {value ? '✓ Signature captured' : 'Sign above using mouse, stylus, or finger'}
+        </span>
+        <button
+          type="button"
+          onClick={clearSignature}
+          style={{ padding: '6px 12px', borderRadius: 8, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 13 }}
+        >
+          Clear
         </button>
       </div>
     </div>
