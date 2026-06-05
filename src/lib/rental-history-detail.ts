@@ -4,7 +4,10 @@ export type RentalHistoryDetail = {
   id: string;
   rentalNumber: string;
   customerName: string;
+  phone: string;
+  email: string;
   bikeNumbers: string[];
+  startTime: string;
   completedAt: string;
   finalFee: string;
   notes: string;
@@ -21,7 +24,7 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
   const { data, error } = await supabase
     .from('rentals')
     .select(
-      'id, rental_number, status, completed_at, final_fee, notes, submission_id, customer:customers(first_name, last_name), rental_bikes(unassigned_at, bike:bikes(bike_number)), submission:customer_submissions(id, id_type, id_last4)',
+      'id, rental_number, status, start_time, completed_at, final_fee, notes, submission_id, customer:customers(first_name, last_name, phone_number, email), rental_bikes(unassigned_at, bike:bikes(bike_number)), submission:customer_submissions!submission_id(id, id_type, id_last4)',
     )
     .eq('id', id)
     .in('status', ['completed', 'voided'])
@@ -35,6 +38,7 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
     id: string;
     rental_number: string;
     status: string;
+    start_time?: string | null;
     completed_at?: string | null;
     final_fee?: number | null;
     notes?: string | null;
@@ -42,6 +46,8 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
     customer?: {
       first_name?: string | null;
       last_name?: string | null;
+      phone_number?: string | null;
+      email?: string | null;
     } | null;
     rental_bikes?: Array<{
       unassigned_at?: string | null;
@@ -66,7 +72,10 @@ export async function getRentalHistoryDetail(id: string): Promise<RentalHistoryD
     id: rental.id,
     rentalNumber: rental.rental_number,
     customerName: `${rental.customer?.first_name ?? ''} ${rental.customer?.last_name ?? ''}`.trim(),
+    phone: rental.customer?.phone_number ?? '',
+    email: rental.customer?.email ?? '',
     bikeNumbers,
+    startTime: rental.start_time ?? '',
     completedAt: rental.completed_at ?? '',
     finalFee: rental.final_fee ? `$${rental.final_fee}` : '$0',
     notes: rental.notes ?? '',

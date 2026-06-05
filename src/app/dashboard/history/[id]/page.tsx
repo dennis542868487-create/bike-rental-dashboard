@@ -6,6 +6,7 @@ import { VoidRentalForm } from '@/components/void-rental-form';
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { getServerSessionProfile } from '@/lib/auth';
+import { formatDateTime } from '@/lib/format-date-time';
 import { getRentalHistoryDetail } from '@/lib/rental-history-detail';
 
 type RentalHistoryDetailPageProps = {
@@ -43,8 +44,11 @@ export default async function RentalHistoryDetailPage({ params }: RentalHistoryD
         <DetailInfoGrid>
           <div><strong>Rental Number:</strong> {rental.rentalNumber}</div>
           <div><strong>Customer:</strong> {rental.customerName}</div>
+          <div><strong>Phone:</strong> {rental.phone || '—'}</div>
+          {rental.email ? <div><strong>Email:</strong> {rental.email}</div> : null}
           <div><strong>Status:</strong> {rental.status}</div>
-          <div><strong>Completed At:</strong> {rental.completedAt || '—'}</div>
+          <div><strong>Start Time:</strong> {rental.startTime ? formatDateTime(rental.startTime) : '—'}</div>
+          <div><strong>Completed At:</strong> {rental.completedAt ? formatDateTime(rental.completedAt) : '—'}</div>
           <div><strong>Final Fee:</strong> {rental.finalFee}</div>
         </DetailInfoGrid>
 
