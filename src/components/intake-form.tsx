@@ -103,7 +103,7 @@ export function IntakeForm({ waiverVersion, waiverText, customerInstructions, id
   const isLoading = isSubmitting || isPending;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'grid', gap: 16 }}>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ display: 'grid', gap: 16 }}>
 
       {/* ── Section 1: Customer Info ─────────────────────────────── */}
       <div style={card}>
