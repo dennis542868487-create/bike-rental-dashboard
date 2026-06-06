@@ -8,6 +8,7 @@ export type BikeDetail = {
   size: string;
   status: string;
   area: string;
+  morningCheckAreaId: string | null;
   notes: string;
   maintenanceHistory: { id: string; date: string; workDone: string; cost: string; notes: string }[];
   rentalHistory: { id: string; rentalNumber: string; status: string; completedAt: string }[];
@@ -18,7 +19,7 @@ export async function getBikeDetail(id: string): Promise<BikeDetail | null> {
 
   const { data, error } = await supabase
     .from('bikes')
-    .select('id, bike_number, bike_type, size, status, notes, morning_check_area:morning_check_areas(name), maintenance_records(id, maintenance_date, work_done, cost, notes), rental_bikes(rental:rentals(id, rental_number, status, completed_at))')
+    .select('id, bike_number, bike_type, size, status, notes, morning_check_area_id, morning_check_area:morning_check_areas(name), maintenance_records(id, maintenance_date, work_done, cost, notes), rental_bikes(rental:rentals(id, rental_number, status, completed_at))')
     .eq('id', id)
     .maybeSingle();
 
@@ -33,6 +34,7 @@ export async function getBikeDetail(id: string): Promise<BikeDetail | null> {
     size?: string | null;
     status: string;
     notes?: string | null;
+    morning_check_area_id?: string | null;
     morning_check_area?: {
       name?: string | null;
     } | null;
@@ -81,6 +83,7 @@ export async function getBikeDetail(id: string): Promise<BikeDetail | null> {
     size: bike.size ?? '',
     status: bike.status,
     area: bike.morning_check_area?.name ?? 'Unassigned',
+    morningCheckAreaId: bike.morning_check_area_id ?? null,
     notes: bike.notes ?? '',
     maintenanceHistory,
     rentalHistory,

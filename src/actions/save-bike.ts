@@ -9,6 +9,7 @@ export async function saveBikeAction(input: {
   bikeType: string;
   size?: string;
   notes?: string;
+  morningCheckAreaId?: string | null;
 }) {
   const access = await ensureStaffActionAccess();
 
@@ -32,6 +33,7 @@ export async function saveBikeAction(input: {
     bike_type: bikeType,
     size: input.size?.trim() || null,
     notes: input.notes?.trim() || null,
+    morning_check_area_id: input.morningCheckAreaId || null,
   };
 
   const query = input.bikeId

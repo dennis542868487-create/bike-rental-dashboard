@@ -9,6 +9,7 @@ import { SaveBikeForm } from '@/components/save-bike-form';
 import { UpdateBikeStatusForm } from '@/components/update-bike-status-form';
 import { UploadBikePhotoForm } from '@/components/upload-bike-photo-form';
 import { getBikeDetail } from '@/lib/bike-detail';
+import { getMorningCheckAreas } from '@/lib/morning-check-areas';
 
 type BikeDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -16,11 +17,13 @@ type BikeDetailPageProps = {
 
 export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
   const { id } = await params;
-  const bike = await getBikeDetail(id);
+  const [bike, allAreas] = await Promise.all([getBikeDetail(id), getMorningCheckAreas()]);
 
   if (!bike) {
     notFound();
   }
+
+  const areas = allAreas.filter((a) => a.isActive).map((a) => ({ id: a.id, name: a.name }));
 
   return (
     <main style={{ display: 'grid', gap: 20 }}>
@@ -44,11 +47,13 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
 
       <SaveBikeForm
         bikeId={bike.id}
+        areas={areas}
         defaultValues={{
           bikeNumber: bike.bikeNumber,
           bikeType: bike.bikeType,
           size: bike.size,
           notes: bike.notes,
+          morningCheckAreaId: bike.morningCheckAreaId,
         }}
       />
 

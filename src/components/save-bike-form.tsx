@@ -4,9 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { saveBikeAction } from '@/actions/save-bike';
 
+type AreaOption = { id: string; name: string };
+
 export function SaveBikeForm({
   bikeId,
   defaultValues,
+  areas = [],
 }: {
   bikeId?: string;
   defaultValues?: {
@@ -14,12 +17,15 @@ export function SaveBikeForm({
     bikeType?: string;
     size?: string;
     notes?: string;
+    morningCheckAreaId?: string | null;
   };
+  areas?: AreaOption[];
 }) {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [morningCheckAreaId, setMorningCheckAreaId] = useState<string>(defaultValues?.morningCheckAreaId ?? '');
 
   return (
     <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 12 }}>
@@ -37,6 +43,19 @@ export function SaveBikeForm({
         <label>
           <div>Size</div>
           <input id="bikeSize" type="text" defaultValue={defaultValues?.size ?? ''} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+        </label>
+        <label>
+          <div>Storage Area</div>
+          <select
+            value={morningCheckAreaId}
+            onChange={(e) => setMorningCheckAreaId(e.target.value)}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+          >
+            <option value="">Unassigned</option>
+            {areas.map((area) => (
+              <option key={area.id} value={area.id}>{area.name}</option>
+            ))}
+          </select>
         </label>
       </div>
 
@@ -62,6 +81,7 @@ export function SaveBikeForm({
               bikeType,
               size,
               notes,
+              morningCheckAreaId: morningCheckAreaId || null,
             });
 
             setMessage(result.message);
