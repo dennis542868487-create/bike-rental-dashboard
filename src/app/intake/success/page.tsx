@@ -18,7 +18,7 @@ export default function IntakeSuccessPage() {
     <main
       style={{
         minHeight: '100vh',
-        background: '#f3f4f6',
+        background: 'var(--border)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -29,8 +29,8 @@ export default function IntakeSuccessPage() {
         style={{
           width: '100%',
           maxWidth: 480,
-          background: '#fff',
-          border: '1px solid #e5e7eb',
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
           borderRadius: 16,
           padding: 40,
           textAlign: 'center',
@@ -56,16 +56,16 @@ export default function IntakeSuccessPage() {
         </div>
 
         <div style={{ display: 'grid', gap: 8 }}>
-          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: '#111827' }}>
+          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)' }}>
             Thank you!
           </h1>
-          <p style={{ margin: 0, fontSize: 16, color: '#374151' }}>
+          <p style={{ margin: 0, fontSize: 16, color: 'var(--text-secondary)' }}>
             Your rental form has been submitted.
           </p>
-          <p style={{ margin: 0, fontSize: 15, color: '#374151', fontWeight: 500 }}>
+          <p style={{ margin: 0, fontSize: 15, color: 'var(--text-secondary)', fontWeight: 500 }}>
             Please return this device to staff.
           </p>
-          <p style={{ margin: 0, fontSize: 14, color: '#9ca3af' }}>
+          <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)' }}>
             This form will reset for the next customer.
           </p>
         </div>
@@ -77,11 +77,11 @@ export default function IntakeSuccessPage() {
               width: 8,
               height: 8,
               borderRadius: '50%',
-              background: '#6b7280',
+              background: 'var(--text-muted)',
               animation: 'pulse 1s infinite',
             }}
           />
-          <span style={{ fontSize: 13, color: '#9ca3af' }}>Redirecting…</span>
+          <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>Redirecting…</span>
         </div>
       </div>
     </main>

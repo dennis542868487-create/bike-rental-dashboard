@@ -36,9 +36,10 @@ export async function completeRentalAction(input: CompleteRentalInput) {
   );
 
   if (error) {
+    console.error('completeRentalAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to complete this rental. Please try again.',
     };
   }
 

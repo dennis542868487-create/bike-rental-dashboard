@@ -6,10 +6,10 @@ type MorningCheckAreasTableProps = {
 
 export function MorningCheckAreasTable({ rows }: MorningCheckAreasTableProps) {
   return (
-    <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', background: '#fff' }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
-          <tr style={{ background: '#f9fafb', textAlign: 'left' }}>
+          <tr style={{ background: 'var(--surface-muted)', textAlign: 'left' }}>
             <th style={{ padding: 12 }}>Area</th>
             <th style={{ padding: 12 }}>Order</th>
             <th style={{ padding: 12 }}>Active</th>
@@ -19,13 +19,13 @@ export function MorningCheckAreasTable({ rows }: MorningCheckAreasTableProps) {
         <tbody>
           {rows.length === 0 ? (
             <tr>
-              <td colSpan={4} style={{ padding: 24, textAlign: 'center', color: '#6b7280' }}>
+              <td colSpan={4} style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>
                 No morning check areas configured.
               </td>
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={row.id} style={{ borderTop: '1px solid #e5e7eb' }}>
+              <tr key={row.id} style={{ borderTop: '1px solid var(--border)' }}>
                 <td style={{ padding: 12 }}>{row.name}</td>
                 <td style={{ padding: 12 }}>{row.displayOrder}</td>
                 <td style={{ padding: 12 }}>{row.isActive ? 'Yes' : 'No'}</td>

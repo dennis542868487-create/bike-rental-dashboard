@@ -7,7 +7,7 @@ type DashboardBackLinkProps = {
 
 export function DashboardBackLink({ href, label }: DashboardBackLinkProps) {
   return (
-    <Link href={href} style={{ color: '#2563eb', textDecoration: 'none', width: 'fit-content' }}>
+    <Link href={href} style={{ color: 'var(--info)', textDecoration: 'none', width: 'fit-content' }}>
       ← {label}
     </Link>
   );

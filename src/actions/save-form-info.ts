@@ -28,8 +28,9 @@ export async function saveFormInfoAction(input: {
     .eq('id', input.id);
 
   if (error) {
-    return { ok: false as const, message: error.message };
+    console.error('saveFormInfoAction failed:', error);
+    return { ok: false as const, message: 'Unable to save form settings. Please try again.' };
   }
 
-  return { ok: true as const, message: 'Form info saved.' };
+  return { ok: true as const, message: 'Form settings saved successfully.' };
 }

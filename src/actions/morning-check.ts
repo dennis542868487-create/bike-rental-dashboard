@@ -74,7 +74,7 @@ export async function submitMorningCheckAction(input: {
     console.error('[morning-check] Signature upload error:', uploadError.message, uploadError);
     return {
       ok: false,
-      message: `Signature upload failed: ${uploadError.message}`,
+      message: 'Unable to upload the signature. Please try again.',
     };
   }
 
@@ -98,14 +98,15 @@ export async function submitMorningCheckAction(input: {
   if (error) {
     await adminSupabase.storage.from('signatures').remove([signaturePath]);
 
+    console.error('submitMorningCheckAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to save the morning check. Please try again.',
     };
   }
 
   return {
     ok: true,
-    message: 'Morning Check submitted.',
+    message: 'Morning check saved.',
   };
 }

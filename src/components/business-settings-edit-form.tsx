@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveBusinessSettingsAction } from '@/actions/save-business-settings';
 import type { BusinessSettings } from '@/lib/business-settings';
+import { InlineNotice } from '@/components/inline-notice';
 
 export function BusinessSettingsEditForm({ settings }: { settings: BusinessSettings }) {
   const router = useRouter();
@@ -14,30 +15,30 @@ export function BusinessSettingsEditForm({ settings }: { settings: BusinessSetti
   const field = (id: string) => document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 16 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 16 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Edit Business Settings</h2>
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
           <div style={{ marginBottom: 4 }}>Business Name</div>
           <input id="bs-name" type="text" defaultValue={settings.businessName}
-            style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
         </label>
         <label>
           <div style={{ marginBottom: 4 }}>Timezone</div>
           <input id="bs-timezone" type="text" defaultValue={settings.timezone}
-            style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
         </label>
         <label>
           <div style={{ marginBottom: 4 }}>Primary Currency</div>
           <input id="bs-currency" type="text" defaultValue={settings.primaryCurrency}
-            style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
         </label>
         <label>
           <div style={{ marginBottom: 4 }}>Default Rental Duration (hours)</div>
           <input id="bs-duration" type="number" min="1" defaultValue={settings.defaultRentalDurationHours ?? ''}
             placeholder="Optional"
-            style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
         </label>
       </div>
 
@@ -45,29 +46,29 @@ export function BusinessSettingsEditForm({ settings }: { settings: BusinessSetti
         <label>
           <div style={{ marginBottom: 4 }}>Phone</div>
           <input id="bs-phone" type="tel" defaultValue={settings.phone}
-            style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
         </label>
         <label>
           <div style={{ marginBottom: 4 }}>Email</div>
           <input id="bs-email" type="email" defaultValue={settings.email}
-            style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
         </label>
       </div>
 
       <label>
         <div style={{ marginBottom: 4 }}>Address</div>
         <input id="bs-address" type="text" defaultValue={settings.address}
-          style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+          style={{ width: '100%', padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
       </label>
 
       <label>
         <div style={{ marginBottom: 4 }}>Operations Note</div>
         <textarea id="bs-note" defaultValue={settings.operationsNote}
-          style={{ width: '100%', minHeight: 100, padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }} />
+          style={{ width: '100%', minHeight: 100, padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }} />
       </label>
 
       {message ? (
-        <p style={{ margin: 0, color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p>
+        <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice>
       ) : null}
 
       <button
@@ -92,7 +93,7 @@ export function BusinessSettingsEditForm({ settings }: { settings: BusinessSetti
             if (result.ok) router.refresh();
           });
         }}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 220 }}
+        style={{ padding: 14, borderRadius: 12, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 220 }}
       >
         {isPending ? 'Saving...' : 'Save Changes'}
       </button>

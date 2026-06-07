@@ -31,7 +31,8 @@ export async function addIdTypeOptionAction(input: { value: string; label: strin
     } as never);
 
   if (error) {
-    return { ok: false as const, message: error.message };
+    console.error('addIdTypeOptionAction failed:', error);
+    return { ok: false as const, message: 'Unable to add this ID type option. Please try again.' };
   }
 
   return { ok: true as const, message: 'ID type option added.' };
@@ -59,8 +60,9 @@ export async function updateIdTypeOptionAction(input: { id: string; label: strin
     .eq('id', input.id);
 
   if (error) {
-    return { ok: false as const, message: error.message };
+    console.error('updateIdTypeOptionAction failed:', error);
+    return { ok: false as const, message: 'Unable to save this ID type option. Please try again.' };
   }
 
-  return { ok: true as const, message: 'Option saved.' };
+  return { ok: true as const, message: 'ID type option updated.' };
 }

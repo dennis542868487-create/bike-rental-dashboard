@@ -35,8 +35,9 @@ export async function saveWaiverSettingsAction(input: SaveWaiverSettingsInput) {
     .eq('id', input.id);
 
   if (error) {
-    return { ok: false as const, message: error.message };
+    console.error('saveWaiverSettingsAction failed:', error);
+    return { ok: false as const, message: 'Unable to save waiver settings. Please try again.' };
   }
 
-  return { ok: true as const, message: 'Waiver settings saved.' };
+  return { ok: true as const, message: 'Waiver settings saved successfully.' };
 }

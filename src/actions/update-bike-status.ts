@@ -21,9 +21,10 @@ export async function updateBikeStatusAction(input: {
     .eq('id', input.bikeId);
 
   if (error) {
+    console.error('updateBikeStatusAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to update the bike status. Please try again.',
     };
   }
 

@@ -50,8 +50,9 @@ export async function saveBusinessSettingsAction(input: SaveBusinessSettingsInpu
     .eq('id', input.id);
 
   if (error) {
-    return { ok: false as const, message: error.message };
+    console.error('saveBusinessSettingsAction failed:', error);
+    return { ok: false as const, message: 'Unable to save business settings. Please try again.' };
   }
 
-  return { ok: true as const, message: 'Business settings saved.' };
+  return { ok: true as const, message: 'Business settings saved successfully.' };
 }

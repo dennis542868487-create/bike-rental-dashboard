@@ -43,14 +43,15 @@ export async function saveBikeAction(input: {
   const { error } = await query;
 
   if (error) {
+    console.error('saveBikeAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: input.bikeId ? 'Unable to update this bike. Please try again.' : 'Unable to add this bike. Please try again.',
     };
   }
 
   return {
     ok: true,
-    message: input.bikeId ? 'Bike updated.' : 'Bike created.',
+    message: input.bikeId ? 'Bike updated successfully.' : 'Bike added successfully.',
   };
 }

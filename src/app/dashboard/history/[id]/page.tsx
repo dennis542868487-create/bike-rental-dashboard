@@ -54,7 +54,7 @@ export default async function RentalHistoryDetailPage({ params }: RentalHistoryD
 
         <div>
           <strong>Assigned Bikes</strong>
-          <div style={{ marginTop: 8, color: '#374151' }}>{rental.bikeNumbers.join(', ') || '—'}</div>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)' }}>{rental.bikeNumbers.join(', ') || '—'}</div>
         </div>
 
         {/* Photo ID — visible to all staff/owner */}
@@ -62,22 +62,22 @@ export default async function RentalHistoryDetailPage({ params }: RentalHistoryD
           <div>
             <strong>Photo ID</strong>
             <div style={{ marginTop: 8, display: 'grid', gap: 6 }}>
-              <div style={{ fontSize: 14, color: '#374151' }}>
-                <span style={{ color: '#6b7280' }}>Type: </span>
+              <div style={{ fontSize: 14, color: 'var(--text-secondary)' }}>
+                <span style={{ color: 'var(--text-muted)' }}>Type: </span>
                 {(ID_TYPE_LABELS[rental.idType] ?? rental.idType) || '—'}
               </div>
-              <div style={{ fontSize: 14, color: '#374151' }}>
-                <span style={{ color: '#6b7280' }}>ID (masked): </span>
+              <div style={{ fontSize: 14, color: 'var(--text-secondary)' }}>
+                <span style={{ color: 'var(--text-muted)' }}>ID (masked): </span>
                 ****{rental.idLast4 || '—'}
               </div>
               {isOwner ? (
-                <div style={{ fontSize: 14, color: '#374151', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ color: '#6b7280' }}>Full ID: </span>
+                <div style={{ fontSize: 14, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ color: 'var(--text-muted)' }}>Full ID: </span>
                   <RevealIdButton submissionId={rental.submissionId} />
                 </div>
               ) : null}
               {!isOwner ? (
-                <div style={{ fontSize: 12, color: '#9ca3af' }}>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
                   Full ID visible to owner only.
                 </div>
               ) : null}
@@ -86,7 +86,7 @@ export default async function RentalHistoryDetailPage({ params }: RentalHistoryD
         ) : (
           <div>
             <strong>Photo ID</strong>
-            <div style={{ marginTop: 8, fontSize: 14, color: '#9ca3af' }}>
+            <div style={{ marginTop: 8, fontSize: 14, color: 'var(--text-muted)' }}>
               No submission record linked to this rental.
             </div>
           </div>
@@ -94,7 +94,7 @@ export default async function RentalHistoryDetailPage({ params }: RentalHistoryD
 
         <div>
           <strong>Notes</strong>
-          <div style={{ marginTop: 8, color: '#374151', whiteSpace: 'pre-wrap' }}>{rental.notes || '—'}</div>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{rental.notes || '—'}</div>
         </div>
       </DetailSection>
 

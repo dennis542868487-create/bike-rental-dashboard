@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { swapRentalBikeAction } from '@/actions/swap-rental-bike';
 import type { AvailableBikeOption } from '@/lib/available-bikes';
+import { InlineNotice } from '@/components/inline-notice';
 
 type ActiveRentalBikeSwapFormProps = {
   rentalId: string;
@@ -18,7 +19,7 @@ export function ActiveRentalBikeSwapForm({ rentalId, currentBikeNumbers, availab
   const [isPending, startTransition] = useTransition();
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 12 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 12 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Swap Bike</h2>
 
       <div><strong>Currently Assigned:</strong> {currentBikeNumbers.join(', ') || '—'}</div>
@@ -26,7 +27,7 @@ export function ActiveRentalBikeSwapForm({ rentalId, currentBikeNumbers, availab
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
           <div>Bike to Remove</div>
-          <select id="oldBikeId" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}>
+          <select id="oldBikeId" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}>
             {currentBikeNumbers.map((bikeNumber) => (
               <option key={bikeNumber} value={bikeNumber}>{bikeNumber}</option>
             ))}
@@ -34,7 +35,7 @@ export function ActiveRentalBikeSwapForm({ rentalId, currentBikeNumbers, availab
         </label>
         <label>
           <div>Replacement Bike</div>
-          <select id="newBikeId" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}>
+          <select id="newBikeId" style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}>
             {availableBikes.map((bike) => (
               <option key={bike.id} value={bike.id}>{bike.label}</option>
             ))}
@@ -42,7 +43,7 @@ export function ActiveRentalBikeSwapForm({ rentalId, currentBikeNumbers, availab
         </label>
       </div>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"
@@ -66,7 +67,7 @@ export function ActiveRentalBikeSwapForm({ rentalId, currentBikeNumbers, availab
           });
         }}
         disabled={isPending}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 220 }}
+        style={{ padding: 14, borderRadius: 12, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 220 }}
       >
         {isPending ? 'Swapping...' : 'Swap Bike'}
       </button>

@@ -14,7 +14,7 @@ export function RevealIdButton({ submissionId }: Props) {
 
   if (fullId) {
     return (
-      <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#111827' }}>
+      <span style={{ fontFamily: 'monospace', fontWeight: 600, color: 'var(--text-primary)' }}>
         {fullId}
       </span>
     );
@@ -38,11 +38,11 @@ export function RevealIdButton({ submissionId }: Props) {
         style={{
           padding: '4px 10px',
           borderRadius: 6,
-          border: '1px solid #d1d5db',
-          background: '#fff',
+          border: '1px solid var(--border-strong)',
+          background: 'var(--surface)',
           cursor: isPending ? 'not-allowed' : 'pointer',
           fontSize: 13,
-          color: '#374151',
+          color: 'var(--text-secondary)',
         }}
       >
         {isPending ? 'Loading…' : 'Reveal ID'}

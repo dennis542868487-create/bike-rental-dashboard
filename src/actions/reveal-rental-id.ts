@@ -18,7 +18,8 @@ export async function revealRentalIdAction(submissionId: string): Promise<
   } as never);
 
   if (error) {
-    return { ok: false, message: error.message };
+    console.error('revealRentalIdAction failed:', error);
+    return { ok: false, message: 'Unable to retrieve the full ID. Please try again.' };
   }
 
   const rows = data as unknown as Array<{ full_id_number?: string | null }> | null;

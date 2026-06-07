@@ -26,9 +26,10 @@ export async function voidRentalAction(input: { rentalId: string; reason?: strin
   );
 
   if (error) {
+    console.error('voidRentalAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to void this rental. Please try again.',
     };
   }
 

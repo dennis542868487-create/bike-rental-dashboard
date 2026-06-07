@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveWaiverSettingsAction } from '@/actions/save-waiver-settings';
+import { InlineNotice } from '@/components/inline-notice';
 
 type WaiverSettingsEditFormProps = {
   id: string;
@@ -18,7 +19,7 @@ export function WaiverSettingsEditForm({ id, waiverText, customerInstructions, i
   const [isPending, startTransition] = useTransition();
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 16 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 16 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Edit Waiver Settings</h2>
 
       <label>
@@ -27,7 +28,7 @@ export function WaiverSettingsEditForm({ id, waiverText, customerInstructions, i
           id="waiverCustomerInstructions"
           defaultValue={customerInstructions}
           placeholder="Instructions shown to customers before the waiver"
-          style={{ width: '100%', minHeight: 100, padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }}
+          style={{ width: '100%', minHeight: 100, padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }}
         />
       </label>
 
@@ -37,7 +38,7 @@ export function WaiverSettingsEditForm({ id, waiverText, customerInstructions, i
           id="waiverText"
           defaultValue={waiverText}
           placeholder="Full waiver text customers must accept"
-          style={{ width: '100%', minHeight: 240, padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }}
+          style={{ width: '100%', minHeight: 240, padding: 10, border: '1px solid var(--border-strong)', borderRadius: 10, boxSizing: 'border-box' }}
         />
       </label>
 
@@ -47,7 +48,7 @@ export function WaiverSettingsEditForm({ id, waiverText, customerInstructions, i
       </label>
 
       {message ? (
-        <p style={{ margin: 0, color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p>
+        <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice>
       ) : null}
 
       <button
@@ -74,7 +75,7 @@ export function WaiverSettingsEditForm({ id, waiverText, customerInstructions, i
           });
         }}
         disabled={isPending}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 200 }}
+        style={{ padding: 14, borderRadius: 12, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 200 }}
       >
         {isPending ? 'Saving...' : 'Save Changes'}
       </button>

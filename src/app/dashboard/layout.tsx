@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { logoutAction } from '@/actions/logout';
+import { DashboardNav } from '@/components/dashboard-nav';
 import { requireDashboardAccess } from '@/lib/auth';
 import { getBusinessSettings } from '@/lib/business-settings';
 
@@ -29,38 +29,63 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', minHeight: '100vh' }}>
-      <aside style={{ borderRight: '1px solid #e5e7eb', padding: 20 }}>
-        <h2 style={{ marginTop: 0 }}>{businessSettings.businessName}</h2>
-        <nav style={{ display: 'grid', gap: 10 }}>
-          {navItems.map((item) => (
-            <Link key={item.href} href={item.href} style={{ color: '#111827', textDecoration: 'none' }}>
-              {item.label}
-            </Link>
-          ))}
-          <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb', margin: '4px 0' }} />
-          {externalLinks.map((item) => (
-            <Link key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280', textDecoration: 'none', fontSize: 14 }}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+      <aside
+        style={{
+          borderRight: '1px solid var(--border)',
+          padding: '20px 16px',
+          background: 'var(--surface)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20,
+        }}
+      >
+        <div style={{ padding: '4px 12px 0' }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+            Rental Dashboard
+          </div>
+          <h2 style={{ margin: '4px 0 0', fontSize: 18, lineHeight: '24px', color: 'var(--primary)' }}>
+            {businessSettings.businessName}
+          </h2>
+        </div>
+        <DashboardNav navItems={navItems} externalLinks={externalLinks} />
       </aside>
-      <div>
-        <header style={{ borderBottom: '1px solid #e5e7eb', padding: 16, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-          <span>Internal Rental Dashboard</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        <header
+          style={{
+            borderBottom: '1px solid var(--border)',
+            padding: '14px 24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 12,
+            background: 'var(--surface)',
+          }}
+        >
+          <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-secondary)' }}>Internal Rental Dashboard</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontWeight: 600 }}>{displayName}</div>
-              <div style={{ fontSize: 13, color: '#6b7280', textTransform: 'capitalize' }}>{sessionProfile.role}</div>
+              <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>{displayName}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', textTransform: 'capitalize' }}>{sessionProfile.role}</div>
             </div>
             <form action={logoutAction}>
-              <button type="submit" style={{ padding: '8px 12px', borderRadius: 10, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer' }}>
+              <button
+                type="submit"
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: 'var(--radius)',
+                  border: '1px solid var(--border-strong)',
+                  background: 'var(--surface)',
+                  color: 'var(--text-primary)',
+                  fontSize: 14,
+                  fontWeight: 500,
+                }}
+              >
                 Log out
               </button>
             </form>
           </div>
         </header>
-        <div style={{ padding: 24 }}>{children}</div>
+        <div style={{ padding: 24, flex: 1 }}>{children}</div>
       </div>
     </div>
   );

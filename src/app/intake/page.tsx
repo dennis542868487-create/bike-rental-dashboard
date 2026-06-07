@@ -14,7 +14,7 @@ export default async function IntakePage() {
     <main
       style={{
         minHeight: '100vh',
-        background: '#f3f4f6',
+        background: 'var(--border)',
         padding: '24px 16px 48px',
         display: 'flex',
         justifyContent: 'center',
@@ -24,10 +24,10 @@ export default async function IntakePage() {
       <div style={{ width: '100%', maxWidth: 640 }}>
         {/* Page title — simple, no brand section */}
         <div style={{ marginBottom: 20, paddingLeft: 4 }}>
-          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#111827' }}>
+          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>
             {businessSettings.formTitle}
           </h1>
-          <p style={{ margin: '6px 0 0', fontSize: 14, color: '#6b7280' }}>
+          <p style={{ margin: '6px 0 0', fontSize: 14, color: 'var(--text-muted)' }}>
             {businessSettings.formIntro}
           </p>
         </div>

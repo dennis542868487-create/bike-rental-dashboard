@@ -29,7 +29,7 @@ export default async function BusinessSettingsPage() {
         {settings.operationsNote ? (
           <div>
             <strong>Operations Note</strong>
-            <div style={{ marginTop: 8, color: '#374151', whiteSpace: 'pre-wrap' }}>{settings.operationsNote}</div>
+            <div style={{ marginTop: 8, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{settings.operationsNote}</div>
           </div>
         ) : null}
       </DetailSection>

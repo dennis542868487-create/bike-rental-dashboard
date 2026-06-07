@@ -34,9 +34,10 @@ export async function updateActiveRentalAction(input: UpdateActiveRentalInput) {
   );
 
   if (error) {
+    console.error('updateActiveRentalAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to update this rental. Please try again.',
     };
   }
 

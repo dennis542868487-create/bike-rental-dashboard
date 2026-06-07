@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { voidRentalAction } from '@/actions/void-rental';
+import { InlineNotice } from '@/components/inline-notice';
 
 export function VoidRentalForm({ rentalId }: { rentalId: string }) {
   const router = useRouter();
@@ -20,7 +21,7 @@ export function VoidRentalForm({ rentalId }: { rentalId: string }) {
         <textarea id="voidReason" placeholder="Explain why this rental is being voided" style={{ width: '100%', minHeight: 96, padding: 10, marginTop: 4, border: '1px solid #fca5a5', borderRadius: 10 }} />
       </label>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"

@@ -19,9 +19,10 @@ export async function archiveBikeAction(input: { bikeId: string }) {
     .maybeSingle();
 
   if (bikeError || !bike) {
+    if (bikeError) console.error('archiveBikeAction bike lookup failed:', bikeError);
     return {
       ok: false,
-      message: bikeError?.message ?? 'Bike not found.',
+      message: 'This bike could not be found. Please refresh and try again.',
     };
   }
 
@@ -30,7 +31,7 @@ export async function archiveBikeAction(input: { bikeId: string }) {
   if (bikeStatus === 'rented') {
     return {
       ok: false,
-      message: 'Rented bikes cannot be archived.',
+      message: 'This bike cannot be archived while it is rented.',
     };
   }
 
@@ -40,9 +41,10 @@ export async function archiveBikeAction(input: { bikeId: string }) {
     .eq('id', input.bikeId);
 
   if (error) {
+    console.error('archiveBikeAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to archive this bike. Please try again.',
     };
   }
 

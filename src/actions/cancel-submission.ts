@@ -24,9 +24,10 @@ export async function cancelSubmissionAction(input: { submissionId: string; reas
   );
 
   if (error) {
+    console.error('cancelSubmissionAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to cancel this submission. Please try again.',
     };
   }
 

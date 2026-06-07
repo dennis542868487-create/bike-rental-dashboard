@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { submitIntakeAction } from '@/actions/intake';
+import { InlineNotice } from '@/components/inline-notice';
 import { SignaturePadInput } from '@/components/signature-pad-input';
 import type { IntakeFormValues } from '@/types/intake';
 
@@ -22,11 +23,11 @@ type IntakeFormProps = {
 const field: React.CSSProperties = {
   width: '100%',
   padding: '14px 12px',
-  border: '1px solid #d1d5db',
+  border: '1px solid var(--border-strong)',
   borderRadius: 10,
   fontSize: 16,          // 16px prevents iOS auto-zoom
   boxSizing: 'border-box',
-  background: '#fff',
+  background: 'var(--surface)',
   color: '#111827',
   lineHeight: 1.4,
 };
@@ -40,10 +41,10 @@ const label: React.CSSProperties = {
 };
 
 const card: React.CSSProperties = {
-  border: '1px solid #e5e7eb',
+  border: '1px solid var(--border)',
   borderRadius: 12,
   padding: 20,
-  background: '#fff',
+  background: 'var(--surface)',
   display: 'grid',
   gap: 16,
 };
@@ -54,7 +55,7 @@ const sectionTitle: React.CSSProperties = {
   fontWeight: 600,
   color: '#111827',
   paddingBottom: 4,
-  borderBottom: '1px solid #f3f4f6',
+  borderBottom: '1px solid var(--border)',
 };
 
 const errorMsg: React.CSSProperties = {
@@ -187,7 +188,7 @@ export function IntakeForm({ waiverVersion, waiverText, customerInstructions, id
         <h2 style={sectionTitle}>Waiver &amp; Signature</h2>
 
         {/* Waiver text */}
-        <div style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: 16, background: '#f9fafb' }}>
+        <div style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 16, background: '#f9fafb' }}>
           <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8, color: '#374151' }}>
             Waiver <span style={{ fontWeight: 400, color: '#9ca3af', fontSize: 12 }}>({waiverVersion})</span>
           </div>
@@ -240,9 +241,7 @@ export function IntakeForm({ waiverVersion, waiverText, customerInstructions, id
 
       {/* Error / success message */}
       {message ? (
-        <p style={{ margin: 0, fontSize: 14, color: messageType === 'error' ? '#dc2626' : '#16a34a' }}>
-          {message}
-        </p>
+        <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice>
       ) : null}
 
       {/* Submit CTA */}

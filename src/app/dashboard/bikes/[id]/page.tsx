@@ -41,7 +41,7 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
 
         <div>
           <strong>Operational Notes</strong>
-          <div style={{ marginTop: 8, color: '#374151', whiteSpace: 'pre-wrap' }}>{bike.notes || '—'}</div>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{bike.notes || '—'}</div>
         </div>
       </DetailSection>
 
@@ -66,7 +66,7 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
       <DetailSection>
         <div>
           <strong>Deletion Policy</strong>
-          <div style={{ marginTop: 8, color: '#374151' }}>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)' }}>
             Bikes are preserved for rental and maintenance history. Use archive instead of hard delete.
           </div>
         </div>
@@ -75,11 +75,11 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
       <DetailSection>
         <div>
           <strong>Maintenance History</strong>
-          <div style={{ marginTop: 8, color: '#374151', display: 'grid', gap: 8 }}>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)', display: 'grid', gap: 8 }}>
             {bike.maintenanceHistory.length === 0
               ? 'No maintenance records yet.'
               : bike.maintenanceHistory.map((record) => (
-                  <div key={record.id} style={{ borderTop: '1px solid #e5e7eb', paddingTop: 8 }}>
+                  <div key={record.id} style={{ borderTop: '1px solid var(--border)', paddingTop: 8 }}>
                     <div><strong>{record.date}</strong> • {record.workDone} • {record.cost}</div>
                     <div>{record.notes || '—'}</div>
                   </div>
@@ -89,11 +89,11 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
 
         <div>
           <strong>Rental History</strong>
-          <div style={{ marginTop: 8, color: '#374151', display: 'grid', gap: 8 }}>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)', display: 'grid', gap: 8 }}>
             {bike.rentalHistory.length === 0
               ? 'No rental history yet.'
               : bike.rentalHistory.map((rental) => (
-                  <div key={rental.id} style={{ borderTop: '1px solid #e5e7eb', paddingTop: 8 }}>
+                  <div key={rental.id} style={{ borderTop: '1px solid var(--border)', paddingTop: 8 }}>
                     <div><strong>{rental.rentalNumber}</strong> • {rental.status}</div>
                     <div>{rental.completedAt || '—'}</div>
                   </div>

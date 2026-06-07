@@ -25,9 +25,10 @@ export async function swapRentalBikeAction(input: SwapRentalBikeInput) {
     .is('unassigned_at', null);
 
   if (currentRentalBikesError) {
+    console.error('swapRentalBikeAction lookup failed:', currentRentalBikesError);
     return {
       ok: false,
-      message: currentRentalBikesError.message,
+      message: 'Unable to load the current rental bikes. Please try again.',
     };
   }
 
@@ -57,9 +58,10 @@ export async function swapRentalBikeAction(input: SwapRentalBikeInput) {
   );
 
   if (error) {
+    console.error('swapRentalBikeAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to swap the bike. Please try again.',
     };
   }
 

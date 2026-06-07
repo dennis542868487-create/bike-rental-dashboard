@@ -23,13 +23,13 @@ export function SettingsEntryList({ items }: SettingsEntryListProps) {
           <Link
             key={item.id}
             href={href ?? '/dashboard/settings'}
-            style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', textDecoration: 'none', color: '#111827', display: 'grid', gap: 6 }}
+            style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', textDecoration: 'none', color: 'var(--text-primary)', display: 'grid', gap: 6 }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
               <div style={{ fontWeight: 600 }}>{item.title}</div>
-              <span style={{ color: '#2563eb', fontSize: 14 }}>Open</span>
+              <span style={{ color: 'var(--info)', fontSize: 14 }}>Open</span>
             </div>
-            <div style={{ color: '#6b7280' }}>{item.description}</div>
+            <div style={{ color: 'var(--text-muted)' }}>{item.description}</div>
           </Link>
         );
       })}

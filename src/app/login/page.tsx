@@ -12,7 +12,7 @@ export default async function LoginPage() {
 
   return (
     <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 24 }}>
-      <section style={{ width: '100%', maxWidth: 420, border: '1px solid #e5e7eb', borderRadius: 12, padding: 24 }}>
+      <section style={{ width: '100%', maxWidth: 420, border: '1px solid var(--border)', borderRadius: 12, padding: 24 }}>
         <h1 style={{ marginTop: 0 }}>Staff Login</h1>
         <p>Wander Bike internal dashboard access.</p>
         <LoginForm />

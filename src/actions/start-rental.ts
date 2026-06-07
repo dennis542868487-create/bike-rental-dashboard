@@ -35,9 +35,10 @@ export async function startRentalAction(input: StartRentalInput) {
     .maybeSingle();
 
   if (submissionError || !submission) {
+    if (submissionError) console.error('startRentalAction submission lookup failed:', submissionError);
     return {
       ok: false,
-      message: submissionError?.message ?? 'Submission not found.',
+      message: 'This submission could not be found. Please refresh and try again.',
     };
   }
 
@@ -60,9 +61,10 @@ export async function startRentalAction(input: StartRentalInput) {
   );
 
   if (error) {
+    console.error('startRentalAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to start this rental. Please try again.',
     };
   }
 

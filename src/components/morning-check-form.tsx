@@ -5,6 +5,7 @@ import { SignaturePadInput } from '@/components/signature-pad-input';
 import { submitMorningCheckAction } from '@/actions/morning-check';
 import type { MorningCheckItem } from '@/types/morning-check';
 import type { MorningCheckAreaRow } from '@/types/morning-check-area';
+import { InlineNotice } from '@/components/inline-notice';
 
 type MorningCheckFormProps = {
   items: MorningCheckItem[];
@@ -121,7 +122,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
             type="date"
             value={checkDate}
             onChange={(e) => setCheckDate(e.target.value)}
-            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}
           />
         </label>
       </section>
@@ -134,7 +135,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
             return (
               <div
                 key={group.key}
-                style={{ border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', background: '#fff' }}
+                style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)' }}
               >
                 {/* Area header */}
                 <button
@@ -147,21 +148,21 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
                     justifyContent: 'space-between',
                     padding: '14px 16px',
                     border: 'none',
-                    background: isCollapsed ? '#f9fafb' : '#fff',
+                    background: isCollapsed ? 'var(--surface-muted)' : '#fff',
                     cursor: 'pointer',
                     textAlign: 'left',
-                    borderBottom: isCollapsed ? 'none' : '1px solid #e5e7eb',
+                    borderBottom: isCollapsed ? 'none' : '1px solid var(--border)',
                     minHeight: 52,
                   }}
                 >
-                  <span style={{ fontWeight: 600, fontSize: 15, color: '#111827' }}>
+                  <span style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>
                     {group.name}
                   </span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ fontSize: 13, color: '#6b7280' }}>
+                    <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>
                       {group.items.length} bike{group.items.length !== 1 ? 's' : ''}
                     </span>
-                    <span style={{ fontSize: 11, color: '#9ca3af', lineHeight: 1 }}>
+                    <span style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1 }}>
                       {isCollapsed ? '▶' : '▼'}
                     </span>
                   </span>
@@ -176,11 +177,11 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
                         display: 'grid',
                         gridTemplateColumns: '80px 70px 1fr 90px',
                         padding: '8px 12px',
-                        background: '#f9fafb',
-                        borderBottom: '1px solid #e5e7eb',
+                        background: 'var(--surface-muted)',
+                        borderBottom: '1px solid var(--border)',
                         fontSize: 12,
                         fontWeight: 600,
-                        color: '#6b7280',
+                        color: 'var(--text-muted)',
                         gap: 8,
                       }}
                     >
@@ -198,7 +199,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
                             display: 'grid',
                             gridTemplateColumns: '80px 70px 1fr 90px',
                             padding: '10px 12px',
-                            borderTop: index > 0 ? '1px solid #f3f4f6' : undefined,
+                            borderTop: index > 0 ? '1px solid var(--border)' : undefined,
                             alignItems: 'center',
                             gap: 8,
                             minHeight: 52,
@@ -211,7 +212,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
                           }}
                         >
                           <div style={{ fontWeight: 600, fontSize: 14 }}>{item.bikeNumber}</div>
-                          <div style={{ fontSize: 13, color: '#6b7280', textTransform: 'capitalize' }}>
+                          <div style={{ fontSize: 13, color: 'var(--text-muted)', textTransform: 'capitalize' }}>
                             {item.bikeType}
                           </div>
                           <select
@@ -224,7 +225,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
                             style={{
                               width: '100%',
                               padding: '8px 6px',
-                              border: '1px solid #d1d5db',
+                              border: '1px solid var(--border-strong)',
                               borderRadius: 8,
                               fontSize: 13,
                               background:
@@ -245,12 +246,12 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
                             onClick={() => updateItem(item.id, { noteOpen: !item.noteOpen })}
                             style={{
                               padding: '8px 6px',
-                              border: '1px solid #d1d5db',
+                              border: '1px solid var(--border-strong)',
                               borderRadius: 8,
                               background: item.notes ? '#f0fdf4' : '#fff',
                               cursor: 'pointer',
                               fontSize: 12,
-                              color: item.notes ? '#16a34a' : '#6b7280',
+                              color: item.notes ? '#16a34a' : 'var(--text-muted)',
                               minHeight: 36,
                               width: '100%',
                             }}
@@ -270,7 +271,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
                               style={{
                                 width: '100%',
                                 padding: 8,
-                                border: '1px solid #d1d5db',
+                                border: '1px solid var(--border-strong)',
                                 borderRadius: 8,
                                 fontSize: 13,
                                 resize: 'vertical',
@@ -290,11 +291,11 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
       ) : (
         <div
           style={{
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border)',
             borderRadius: 12,
             padding: 16,
-            background: '#fff',
-            color: '#6b7280',
+            background: 'var(--surface)',
+            color: 'var(--text-muted)',
           }}
         >
           No bikes are currently available for Morning Check. Only non-rented, non-archived bikes appear here.
@@ -304,10 +305,10 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
       {/* Staff Signature */}
       <section
         style={{
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border)',
           borderRadius: 12,
           padding: 16,
-          background: '#fff',
+          background: 'var(--surface)',
           display: 'grid',
           gap: 8,
         }}
@@ -319,7 +320,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
       </section>
 
       {message ? (
-        <p style={{ margin: 0, color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p>
+        <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice>
       ) : null}
 
       <button
@@ -330,7 +331,7 @@ export function MorningCheckForm({ items, areas }: MorningCheckFormProps) {
           padding: 14,
           borderRadius: 12,
           border: 'none',
-          background: '#111827',
+          background: 'var(--text-primary)',
           color: '#fff',
           maxWidth: 240,
         }}

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { updateActiveRentalAction } from '@/actions/update-active-rental';
+import { InlineNotice } from '@/components/inline-notice';
 
 function toDatetimeLocalValue(iso: string | null | undefined): string {
   if (!iso) return '';
@@ -33,7 +34,7 @@ export function ActiveRentalEditForm({
   const [isPending, startTransition] = useTransition();
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 12 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 12 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Edit Active Rental</h2>
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
@@ -43,7 +44,7 @@ export function ActiveRentalEditForm({
             id="activeStartTime"
             type="datetime-local"
             defaultValue={toDatetimeLocalValue(currentStartTime)}
-            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}
           />
         </label>
         <label>
@@ -52,7 +53,7 @@ export function ActiveRentalEditForm({
             id="activeReturnTime"
             type="datetime-local"
             defaultValue={toDatetimeLocalValue(currentReturnTime)}
-            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}
           />
         </label>
         <label>
@@ -63,7 +64,7 @@ export function ActiveRentalEditForm({
             min="0"
             step="0.01"
             defaultValue={currentAmountCollected ?? '0'}
-            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}
           />
         </label>
       </div>
@@ -74,11 +75,11 @@ export function ActiveRentalEditForm({
           id="activeRentalNotes"
           defaultValue={currentNotes ?? ''}
           placeholder="Notes for this rental"
-          style={{ width: '100%', minHeight: 100, padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+          style={{ width: '100%', minHeight: 100, padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}
         />
       </label>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"
@@ -106,7 +107,7 @@ export function ActiveRentalEditForm({
           });
         }}
         disabled={isPending}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 220 }}
+        style={{ padding: 14, borderRadius: 12, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 220 }}
       >
         {isPending ? 'Saving...' : 'Save Changes'}
       </button>

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { archiveBikeAction } from '@/actions/archive-bike';
+import { InlineNotice } from '@/components/inline-notice';
 
 export function ArchiveBikeForm({ bikeId }: { bikeId: string }) {
   const router = useRouter();
@@ -15,7 +16,7 @@ export function ArchiveBikeForm({ bikeId }: { bikeId: string }) {
       <h2 style={{ margin: 0, fontSize: 18, color: '#9a3412' }}>Archive Bike</h2>
       <p style={{ margin: 0, color: '#9a3412' }}>Archive this bike to remove it from active inventory lists.</p>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"

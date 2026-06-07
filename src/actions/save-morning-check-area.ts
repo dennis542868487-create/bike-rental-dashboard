@@ -27,7 +27,8 @@ export async function addMorningCheckAreaAction(input: {
     } as never);
 
   if (error) {
-    return { ok: false as const, message: error.message };
+    console.error('addMorningCheckAreaAction failed:', error);
+    return { ok: false as const, message: 'Unable to add this area. Please try again.' };
   }
 
   return { ok: true as const, message: 'Area added.' };
@@ -61,8 +62,9 @@ export async function updateMorningCheckAreaAction(input: {
     .eq('id', input.id);
 
   if (error) {
-    return { ok: false as const, message: error.message };
+    console.error('updateMorningCheckAreaAction failed:', error);
+    return { ok: false as const, message: 'Unable to save this area. Please try again.' };
   }
 
-  return { ok: true as const, message: 'Area saved.' };
+  return { ok: true as const, message: 'Area updated.' };
 }

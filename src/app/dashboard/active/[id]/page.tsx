@@ -54,12 +54,12 @@ export default async function ActiveRentalDetailPage({ params }: ActiveRentalDet
 
         <div>
           <strong>Assigned Bikes</strong>
-          <div style={{ marginTop: 8, color: '#374151' }}>{rental.bikeNumbers.join(', ') || '—'}</div>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)' }}>{rental.bikeNumbers.join(', ') || '—'}</div>
         </div>
 
         <div>
           <strong>Notes</strong>
-          <div style={{ marginTop: 8, color: '#374151', whiteSpace: 'pre-wrap' }}>{rental.notes || '—'}</div>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{rental.notes || '—'}</div>
         </div>
       </DetailSection>
 

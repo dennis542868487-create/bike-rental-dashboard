@@ -14,17 +14,17 @@ export default async function HistoryPage() {
     <main style={{ display: 'grid', gap: 20 }}>
       <PageHeader title="Rental History" description="Completed rentals and historical records." />
       {userRole === 'owner' ? (
-        <div style={{ display: 'grid', gap: 16, padding: '16px', borderRadius: 12, border: '1px solid #e5e7eb', background: '#f9fafb' }}>
+        <div style={{ display: 'grid', gap: 16, padding: '16px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-muted)' }}>
           <div>
             <Link
               href="/dashboard/history/export"
-              style={{ display: 'inline-block', padding: '10px 14px', borderRadius: 10, border: '1px solid #d1d5db', textDecoration: 'none', color: '#111827', background: '#fff' }}
+              style={{ display: 'inline-block', padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border-strong)', textDecoration: 'none', color: 'var(--text-primary)', background: 'var(--surface)' }}
             >
               Export CSV
             </Link>
           </div>
-          <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: 16 }}>
-            <p style={{ margin: '0 0 12px', fontSize: 13, fontWeight: 600, color: '#374151' }}>
+          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16 }}>
+            <p style={{ margin: '0 0 12px', fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
               Export ZIP (Owner Only)
             </p>
             <RentalHistoryExportControls />

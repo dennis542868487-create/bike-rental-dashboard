@@ -5,13 +5,13 @@ export default function RentalHistoryNotFound() {
   return (
     <main style={{ display: 'grid', gap: 20 }}>
       <PageHeader title="Rental Not Found" description="This rental record could not be located." />
-      <div style={{ padding: 24, borderRadius: 12, border: '1px solid #e5e7eb', background: '#fff', display: 'grid', gap: 12 }}>
-        <p style={{ margin: 0, color: '#374151' }}>
+      <div style={{ padding: 24, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', display: 'grid', gap: 12 }}>
+        <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
           The rental you&apos;re looking for does not exist or is not accessible.
         </p>
         <Link
           href="/dashboard/history"
-          style={{ color: '#2563eb', textDecoration: 'none', fontSize: 14 }}
+          style={{ color: 'var(--info)', textDecoration: 'none', fontSize: 14 }}
         >
           ← Back to Rental History
         </Link>

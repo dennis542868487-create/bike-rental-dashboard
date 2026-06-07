@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { addIdTypeOptionAction, updateIdTypeOptionAction } from '@/actions/save-id-type-option';
 import type { IdTypeOption } from '@/lib/id-type-settings';
+import { InlineNotice } from '@/components/inline-notice';
 
 // All values allowed by the public.id_type Postgres enum.
 const ALL_ENUM_VALUES = [
@@ -34,18 +35,18 @@ export function IdTypeOptionsEditForm({ options }: Props) {
   }
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 20 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 20 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Edit ID Type Options</h2>
 
       {/* Existing options */}
       <div style={{ display: 'grid', gap: 12 }}>
         {options.length === 0 ? (
-          <div style={{ color: '#6b7280' }}>No options configured yet.</div>
+          <div style={{ color: 'var(--text-muted)' }}>No options configured yet.</div>
         ) : (
           options.map((option) => (
-            <div key={option.id} style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: 12, display: 'grid', gap: 10 }}>
+            <div key={option.id} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 12, display: 'grid', gap: 10 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <code style={{ fontSize: 12, color: '#6b7280', background: '#f3f4f6', padding: '2px 6px', borderRadius: 4 }}>{option.value}</code>
+                <code style={{ fontSize: 12, color: 'var(--text-muted)', background: 'var(--border)', padding: '2px 6px', borderRadius: 4 }}>{option.value}</code>
                 <span style={{ fontSize: 12, color: option.isActive ? '#16a34a' : '#dc2626' }}>
                   {option.isActive ? 'Active' : 'Inactive'}
                 </span>
@@ -58,7 +59,7 @@ export function IdTypeOptionsEditForm({ options }: Props) {
                     id={`label-${option.id}`}
                     type="text"
                     defaultValue={option.label}
-                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
                   />
                 </label>
                 <label>
@@ -67,7 +68,7 @@ export function IdTypeOptionsEditForm({ options }: Props) {
                     id={`sort-${option.id}`}
                     type="number"
                     defaultValue={option.sortOrder}
-                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
                   />
                 </label>
               </div>
@@ -89,7 +90,7 @@ export function IdTypeOptionsEditForm({ options }: Props) {
                     showResult(result.ok, result.message);
                   });
                 }}
-                style={{ padding: '8px 14px', borderRadius: 8, border: 'none', background: '#111827', color: '#fff', maxWidth: 100, fontSize: 14 }}
+                style={{ padding: '8px 14px', borderRadius: 8, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 100, fontSize: 14 }}
               >
                 {isPending ? 'Saving...' : 'Save'}
               </button>
@@ -107,7 +108,7 @@ export function IdTypeOptionsEditForm({ options }: Props) {
               <div style={{ fontSize: 12, marginBottom: 4 }}>Value</div>
               <select
                 id="new-value"
-                style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
               >
                 {availableToAdd.map((v) => (
                   <option key={v} value={v}>{v}</option>
@@ -120,7 +121,7 @@ export function IdTypeOptionsEditForm({ options }: Props) {
                 id="new-label"
                 type="text"
                 placeholder="e.g. Other ID"
-                style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
               />
             </label>
             <label>
@@ -129,7 +130,7 @@ export function IdTypeOptionsEditForm({ options }: Props) {
                 id="new-sort"
                 type="number"
                 defaultValue={options.length + 1}
-                style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
               />
             </label>
           </div>
@@ -153,7 +154,7 @@ export function IdTypeOptionsEditForm({ options }: Props) {
       )}
 
       {message ? (
-        <p style={{ margin: 0, color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p>
+        <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice>
       ) : null}
     </section>
   );

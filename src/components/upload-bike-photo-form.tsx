@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { uploadBikePhotoAction } from '@/actions/upload-bike-photo';
+import { InlineNotice } from '@/components/inline-notice';
 
 export function UploadBikePhotoForm({ bikeId }: { bikeId: string }) {
   const router = useRouter();
@@ -11,7 +12,7 @@ export function UploadBikePhotoForm({ bikeId }: { bikeId: string }) {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 12 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 12 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Upload Bike Photo</h2>
 
       <label>
@@ -19,7 +20,7 @@ export function UploadBikePhotoForm({ bikeId }: { bikeId: string }) {
         <input id="bikePhotoFile" type="file" accept="image/*" style={{ width: '100%', marginTop: 8 }} />
       </label>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"
@@ -58,7 +59,7 @@ export function UploadBikePhotoForm({ bikeId }: { bikeId: string }) {
           });
         }}
         disabled={isPending}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 220 }}
+        style={{ padding: 14, borderRadius: 12, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 220 }}
       >
         {isPending ? 'Uploading...' : 'Upload Photo'}
       </button>

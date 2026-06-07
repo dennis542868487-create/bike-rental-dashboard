@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { saveBikeAction } from '@/actions/save-bike';
+import { InlineNotice } from '@/components/inline-notice';
 
 type AreaOption = { id: string; name: string };
 
@@ -28,28 +29,28 @@ export function SaveBikeForm({
   const [morningCheckAreaId, setMorningCheckAreaId] = useState<string>(defaultValues?.morningCheckAreaId ?? '');
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 12 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 12 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>{bikeId ? 'Edit Bike' : 'Add Bike'}</h2>
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
           <div>Bike Number</div>
-          <input id="bikeNumber" type="text" defaultValue={defaultValues?.bikeNumber ?? ''} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+          <input id="bikeNumber" type="text" defaultValue={defaultValues?.bikeNumber ?? ''} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }} />
         </label>
         <label>
           <div>Bike Type</div>
-          <input id="bikeType" type="text" defaultValue={defaultValues?.bikeType ?? ''} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+          <input id="bikeType" type="text" defaultValue={defaultValues?.bikeType ?? ''} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }} />
         </label>
         <label>
           <div>Size</div>
-          <input id="bikeSize" type="text" defaultValue={defaultValues?.size ?? ''} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+          <input id="bikeSize" type="text" defaultValue={defaultValues?.size ?? ''} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }} />
         </label>
         <label>
           <div>Storage Area</div>
           <select
             value={morningCheckAreaId}
             onChange={(e) => setMorningCheckAreaId(e.target.value)}
-            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}
+            style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}
           >
             <option value="">Unassigned</option>
             {areas.map((area) => (
@@ -61,10 +62,10 @@ export function SaveBikeForm({
 
       <label>
         <div>Notes</div>
-        <textarea id="bikeNotes" defaultValue={defaultValues?.notes ?? ''} style={{ width: '100%', minHeight: 100, padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+        <textarea id="bikeNotes" defaultValue={defaultValues?.notes ?? ''} style={{ width: '100%', minHeight: 100, padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }} />
       </label>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"
@@ -93,7 +94,7 @@ export function SaveBikeForm({
           });
         }}
         disabled={isPending}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 220 }}
+        style={{ padding: 14, borderRadius: 12, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 220 }}
       >
         {isPending ? 'Saving...' : bikeId ? 'Save Bike' : 'Create Bike'}
       </button>

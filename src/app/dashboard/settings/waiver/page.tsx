@@ -21,12 +21,12 @@ export default async function WaiverSettingsPage() {
 
         <div>
           <strong>Customer Instructions</strong>
-          <div style={{ marginTop: 8, color: '#374151', whiteSpace: 'pre-wrap' }}>{waiver?.customerInstructions || '—'}</div>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{waiver?.customerInstructions || '—'}</div>
         </div>
 
         <div>
           <strong>Waiver Text</strong>
-          <div style={{ marginTop: 8, color: '#374151', whiteSpace: 'pre-wrap' }}>{waiver?.waiverText || '—'}</div>
+          <div style={{ marginTop: 8, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{waiver?.waiverText || '—'}</div>
         </div>
       </DetailSection>
 

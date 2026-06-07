@@ -13,7 +13,7 @@ export async function loginAction(input: FormData) {
   if (!parsed.success) {
     return {
       ok: false,
-      message: parsed.error.issues[0]?.message ?? 'Invalid login input',
+      message: parsed.error.issues[0]?.message ?? 'Please enter a valid email and password.',
     };
   }
 
@@ -24,9 +24,10 @@ export async function loginAction(input: FormData) {
   });
 
   if (error) {
+    console.error('loginAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Incorrect email or password. Please try again.',
     };
   }
 

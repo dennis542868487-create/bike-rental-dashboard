@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { saveUserProfileAction } from '@/actions/save-user-profile';
+import { InlineNotice } from '@/components/inline-notice';
 
 export function SaveUserProfileForm({
   profileId,
@@ -22,24 +23,24 @@ export function SaveUserProfileForm({
   const [isPending, startTransition] = useTransition();
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 12 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 12 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Update User Profile</h2>
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
           <div>Email</div>
-          <input id="userEmail" type="email" defaultValue={defaultValues.email} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+          <input id="userEmail" type="email" defaultValue={defaultValues.email} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }} />
         </label>
         <label>
           <div>Full Name</div>
-          <input id="userFullName" type="text" defaultValue={defaultValues.fullName} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }} />
+          <input id="userFullName" type="text" defaultValue={defaultValues.fullName} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }} />
         </label>
       </div>
 
       <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <label>
           <div>Role</div>
-          <select id="userRole" defaultValue={defaultValues.role} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid #d1d5db', borderRadius: 10 }}>
+          <select id="userRole" defaultValue={defaultValues.role} style={{ width: '100%', padding: 10, marginTop: 4, border: '1px solid var(--border-strong)', borderRadius: 10 }}>
             <option value="staff">Staff</option>
             <option value="owner">Owner</option>
           </select>
@@ -50,7 +51,7 @@ export function SaveUserProfileForm({
         </label>
       </div>
 
-      {message ? <p style={{ color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"
@@ -78,7 +79,7 @@ export function SaveUserProfileForm({
           });
         }}
         disabled={isPending}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 220 }}
+        style={{ padding: 14, borderRadius: 12, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 220 }}
       >
         {isPending ? 'Saving...' : 'Save User Profile'}
       </button>

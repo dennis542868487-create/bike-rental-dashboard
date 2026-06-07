@@ -45,9 +45,10 @@ export async function saveUserProfileAction(input: {
     });
 
     if (authError || !authUser.user) {
+      console.error('saveUserProfileAction createUser failed:', authError);
       return {
         ok: false,
-        message: authError?.message ?? 'Could not create auth user.',
+        message: 'Unable to create this user. Please check the email and try again.',
       };
     }
 
@@ -61,15 +62,16 @@ export async function saveUserProfileAction(input: {
 
     if (insertError) {
       await supabase.auth.admin.deleteUser(authUser.user.id);
+      console.error('saveUserProfileAction insert failed:', insertError);
       return {
         ok: false,
-        message: insertError.message,
+        message: 'Unable to create this user. Please try again.',
       };
     }
 
     return {
       ok: true,
-      message: 'User created.',
+      message: 'User created successfully.',
     };
   }
 
@@ -110,9 +112,10 @@ export async function saveUserProfileAction(input: {
     .eq('id', input.profileId);
 
   if (error) {
+    console.error('saveUserProfileAction update failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to update this user. Please try again.',
     };
   }
 

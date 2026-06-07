@@ -11,7 +11,7 @@ export function SearchInput({ placeholder, value, onChange }: SearchInputProps) 
       placeholder={placeholder}
       value={value}
       onChange={(event) => onChange?.(event.target.value)}
-      style={{ width: '100%', maxWidth: 420, padding: 12, border: '1px solid #d1d5db', borderRadius: 10 }}
+      style={{ width: '100%', maxWidth: 420, padding: 12, border: '1px solid var(--border-strong)', borderRadius: 10 }}
     />
   );
 }

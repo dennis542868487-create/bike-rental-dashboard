@@ -7,10 +7,10 @@ type PendingSubmissionsTableProps = {
 
 export function PendingSubmissionsTable({ rows }: PendingSubmissionsTableProps) {
   return (
-    <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', background: '#fff' }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
-          <tr style={{ background: '#f9fafb', textAlign: 'left' }}>
+          <tr style={{ background: 'var(--surface-muted)', textAlign: 'left' }}>
             <th style={{ padding: 12 }}>Submission #</th>
             <th style={{ padding: 12 }}>Customer</th>
             <th style={{ padding: 12 }}>Phone</th>
@@ -21,15 +21,15 @@ export function PendingSubmissionsTable({ rows }: PendingSubmissionsTableProps) 
         <tbody>
           {rows.length === 0 ? (
             <tr>
-              <td colSpan={5} style={{ padding: 24, textAlign: 'center', color: '#6b7280' }}>
+              <td colSpan={5} style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>
                 No pending submissions.
               </td>
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={row.id} style={{ borderTop: '1px solid #e5e7eb' }}>
+              <tr key={row.id} style={{ borderTop: '1px solid var(--border)' }}>
                 <td style={{ padding: 12 }}>
-                  <Link href={`/dashboard/pending/${row.id}`} style={{ color: '#2563eb', textDecoration: 'none' }}>
+                  <Link href={`/dashboard/pending/${row.id}`} style={{ color: 'var(--info)', textDecoration: 'none' }}>
                     {row.submissionNumber}
                   </Link>
                 </td>

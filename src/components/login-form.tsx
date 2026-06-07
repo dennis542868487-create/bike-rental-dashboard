@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginAction } from '@/actions/login';
+import { InlineNotice } from '@/components/inline-notice';
 import { loginSchema, type LoginFormValues } from '@/types/auth';
 
 export function LoginForm() {
@@ -46,7 +47,7 @@ export function LoginForm() {
         <input type="password" {...register('password')} placeholder="••••••••" style={{ width: '100%', padding: 10, marginTop: 4 }} />
         {errors.password ? <p style={{ color: '#dc2626' }}>{errors.password.message}</p> : null}
       </label>
-      {message ? <p style={{ color: '#2563eb' }}>{message}</p> : null}
+      {message ? <InlineNotice type="error">{message}</InlineNotice> : null}
       <button type="submit" disabled={isSubmitting || isPending} style={{ padding: 12, marginTop: 8 }}>
         {isSubmitting || isPending ? 'Signing in...' : 'Sign in'}
       </button>

@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveFormInfoAction } from '@/actions/save-form-info';
+import { InlineNotice } from '@/components/inline-notice';
 
 type Props = {
   id: string;
@@ -17,10 +18,10 @@ export function FormInfoEditForm({ id, formTitle, formIntro }: Props) {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 16 }}>
-      <h2 style={{ margin: 0, fontSize: 18 }}>Form Appearance</h2>
-      <p style={{ margin: 0, fontSize: 13, color: '#6b7280' }}>
-        Controls the title and intro text shown at the top of the public customer intake form.
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 16 }}>
+      <h2 style={{ margin: 0 }}>Form Appearance</h2>
+      <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)' }}>
+        Set the title and instructions customers see at the top of the intake form.
       </p>
 
       <label>
@@ -30,7 +31,7 @@ export function FormInfoEditForm({ id, formTitle, formIntro }: Props) {
           type="text"
           defaultValue={formTitle}
           placeholder="e.g. Wander Bike Rental Form"
-          style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }}
+          style={{ width: '100%', padding: 10, boxSizing: 'border-box' }}
         />
       </label>
 
@@ -41,13 +42,11 @@ export function FormInfoEditForm({ id, formTitle, formIntro }: Props) {
           defaultValue={formIntro}
           placeholder="e.g. Please complete this form before renting your bike."
           rows={3}
-          style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 10, boxSizing: 'border-box' }}
+          style={{ width: '100%', padding: 10, boxSizing: 'border-box' }}
         />
       </label>
 
-      {message ? (
-        <p style={{ margin: 0, color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p>
-      ) : null}
+      {message ? <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice> : null}
 
       <button
         type="button"
@@ -62,7 +61,7 @@ export function FormInfoEditForm({ id, formTitle, formIntro }: Props) {
             if (result.ok) router.refresh();
           });
         }}
-        style={{ padding: 14, borderRadius: 12, border: 'none', background: '#111827', color: '#fff', maxWidth: 220 }}
+        style={{ padding: '12px 16px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontWeight: 600, maxWidth: 220 }}
       >
         {isPending ? 'Saving...' : 'Save Form Info'}
       </button>

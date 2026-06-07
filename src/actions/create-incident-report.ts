@@ -35,9 +35,10 @@ export async function createIncidentReportAction(input: {
   } as never);
 
   if (error) {
+    console.error('createIncidentReportAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to save this incident report. Please try again.',
     };
   }
 

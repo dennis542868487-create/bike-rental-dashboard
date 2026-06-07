@@ -50,7 +50,7 @@ export function MorningCheckHistoryTable({ rows }: MorningCheckHistoryTableProps
 
   if (rows.length === 0) {
     return (
-      <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 24, background: '#fff', color: '#6b7280', textAlign: 'center' }}>
+      <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 24, background: 'var(--surface)', color: '#6b7280', textAlign: 'center' }}>
         No morning check history yet.
       </div>
     );
@@ -63,7 +63,7 @@ export function MorningCheckHistoryTable({ rows }: MorningCheckHistoryTableProps
       {groups.map((group) => {
         const isOpen = openDates.has(group.checkDate);
         return (
-          <div key={group.checkDate} style={{ border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', background: '#fff' }}>
+          <div key={group.checkDate} style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)' }}>
             {/* Summary row — always visible */}
             <button
               type="button"
@@ -98,8 +98,8 @@ export function MorningCheckHistoryTable({ rows }: MorningCheckHistoryTableProps
                   display: 'grid',
                   gridTemplateColumns: '90px 70px 1fr 160px 1fr',
                   padding: '8px 16px',
-                  borderTop: '1px solid #e5e7eb',
-                  background: '#fff',
+                  borderTop: '1px solid var(--border)',
+                  background: 'var(--surface)',
                   fontSize: 12,
                   fontWeight: 600,
                   color: '#6b7280',
@@ -119,7 +119,7 @@ export function MorningCheckHistoryTable({ rows }: MorningCheckHistoryTableProps
                       display: 'grid',
                       gridTemplateColumns: '90px 70px 1fr 160px 1fr',
                       padding: '8px 16px',
-                      borderTop: '1px solid #f3f4f6',
+                      borderTop: '1px solid var(--border)',
                       fontSize: 13,
                       alignItems: 'start',
                       gap: 8,

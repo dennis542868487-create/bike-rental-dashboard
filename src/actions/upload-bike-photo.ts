@@ -37,9 +37,10 @@ export async function uploadBikePhotoAction(input: {
     });
 
   if (uploadError) {
+    console.error('uploadBikePhotoAction upload failed:', uploadError);
     return {
       ok: false,
-      message: uploadError.message,
+      message: 'Unable to upload the photo. Please try again.',
     };
   }
 
@@ -49,9 +50,10 @@ export async function uploadBikePhotoAction(input: {
     .eq('id', input.bikeId);
 
   if (error) {
+    console.error('uploadBikePhotoAction save failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to save the photo. Please try again.',
     };
   }
 

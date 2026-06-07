@@ -8,10 +8,10 @@ export function DetailSection({ children }: DetailSectionProps) {
   return (
     <section
       style={{
-        border: '1px solid #e5e7eb',
+        border: '1px solid var(--border)',
         borderRadius: 12,
         padding: 16,
-        background: '#fff',
+        background: 'var(--surface)',
         display: 'grid',
         gap: 16,
       }}

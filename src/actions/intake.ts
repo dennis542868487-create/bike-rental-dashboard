@@ -126,9 +126,10 @@ export async function submitIntakeAction(values: IntakeFormValues) {
   if (error) {
     await supabase.storage.from('signatures').remove([signaturePath]);
 
+    console.error('intakeAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Something went wrong while submitting this form. Please try again or ask staff for help.',
     };
   }
 

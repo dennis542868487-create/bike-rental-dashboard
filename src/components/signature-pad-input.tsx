@@ -21,7 +21,7 @@ export function SignaturePadInput({ value, onChange }: SignaturePadInputProps) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.lineWidth = 2.5;
-    ctx.strokeStyle = '#111827';
+    ctx.strokeStyle = 'var(--text-primary)';
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }, []);
@@ -95,21 +95,21 @@ export function SignaturePadInput({ value, onChange }: SignaturePadInputProps) {
           width: '100%',
           height: 160,
           touchAction: 'none',
-          border: '1px solid #d1d5db',
+          border: '1px solid var(--border-strong)',
           borderRadius: 10,
-          background: '#fff',
+          background: 'var(--surface)',
           cursor: 'crosshair',
           display: 'block',
         }}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-        <span style={{ color: value ? '#16a34a' : '#6b7280', fontSize: 13 }}>
+        <span style={{ color: value ? '#16a34a' : 'var(--text-muted)', fontSize: 13 }}>
           {value ? '✓ Signature captured' : 'Sign above using mouse, stylus, or finger'}
         </span>
         <button
           type="button"
           onClick={clearSignature}
-          style={{ padding: '6px 12px', borderRadius: 8, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 13 }}
+          style={{ padding: '6px 12px', borderRadius: 8, border: '1px solid var(--border-strong)', background: 'var(--surface)', cursor: 'pointer', fontSize: 13 }}
         >
           Clear
         </button>

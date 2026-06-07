@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { addMorningCheckAreaAction, updateMorningCheckAreaAction } from '@/actions/save-morning-check-area';
 import type { MorningCheckAreaRow } from '@/types/morning-check-area';
+import { InlineNotice } from '@/components/inline-notice';
 
 type Props = {
   areas: MorningCheckAreaRow[];
@@ -26,16 +27,16 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
   }
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 20 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 20 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Edit Morning Check Areas</h2>
 
       {/* Existing areas */}
       <div style={{ display: 'grid', gap: 12 }}>
         {areas.length === 0 ? (
-          <div style={{ color: '#6b7280' }}>No areas configured yet. Add one below.</div>
+          <div style={{ color: 'var(--text-muted)' }}>No areas configured yet. Add one below.</div>
         ) : (
           areas.map((area) => (
-            <div key={area.id} style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: 12, display: 'grid', gap: 10 }}>
+            <div key={area.id} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 12, display: 'grid', gap: 10 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <strong style={{ fontSize: 14 }}>{area.name}</strong>
                 <span style={{ fontSize: 12, color: area.isActive ? '#16a34a' : '#dc2626' }}>
@@ -50,7 +51,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
                     id={`name-${area.id}`}
                     type="text"
                     defaultValue={area.name}
-                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
                   />
                 </label>
                 <label>
@@ -59,7 +60,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
                     id={`order-${area.id}`}
                     type="number"
                     defaultValue={area.displayOrder}
-                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
                   />
                 </label>
                 <label>
@@ -68,7 +69,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
                     id={`notes-${area.id}`}
                     type="text"
                     defaultValue={area.notes}
-                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
                   />
                 </label>
               </div>
@@ -91,7 +92,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
                     showResult(result.ok, result.message);
                   });
                 }}
-                style={{ padding: '8px 14px', borderRadius: 8, border: 'none', background: '#111827', color: '#fff', maxWidth: 100, fontSize: 14 }}
+                style={{ padding: '8px 14px', borderRadius: 8, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 100, fontSize: 14 }}
               >
                 {isPending ? 'Saving...' : 'Save'}
               </button>
@@ -110,7 +111,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
               id="new-area-name"
               type="text"
               placeholder="e.g. A, B, Front Rack"
-              style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
             />
           </label>
           <label>
@@ -119,7 +120,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
               id="new-area-order"
               type="number"
               defaultValue={areas.length + 1}
-              style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
             />
           </label>
           <label>
@@ -128,7 +129,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
               id="new-area-notes"
               type="text"
               placeholder="Optional"
-              style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
             />
           </label>
         </div>
@@ -151,7 +152,7 @@ export function MorningCheckAreasEditForm({ areas }: Props) {
       </div>
 
       {message ? (
-        <p style={{ margin: 0, color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p>
+        <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice>
       ) : null}
     </section>
   );

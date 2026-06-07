@@ -149,6 +149,11 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    return new NextResponse(error instanceof Error ? error.message : 'Export failed', { status: 500 });
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error('[history/export-zip] Export failed:', msg);
+    return new NextResponse(
+      'Rental History export failed. Please try again or contact support if the problem persists.',
+      { status: 500 },
+    );
   }
 }

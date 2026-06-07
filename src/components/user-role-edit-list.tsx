@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveUserProfileAction } from '@/actions/save-user-profile';
 import type { UserProfileRow } from '@/types/user-profile';
+import { InlineNotice } from '@/components/inline-notice';
 
 type Props = {
   users: UserProfileRow[];
@@ -22,18 +23,18 @@ export function UserRoleEditList({ users }: Props) {
   }
 
   return (
-    <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff', display: 'grid', gap: 16 }}>
+    <section style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)', display: 'grid', gap: 16 }}>
       <h2 style={{ margin: 0, fontSize: 18 }}>Users & Roles</h2>
 
       <div style={{ display: 'grid', gap: 12 }}>
         {users.length === 0 ? (
-          <div style={{ color: '#6b7280' }}>No users found.</div>
+          <div style={{ color: 'var(--text-muted)' }}>No users found.</div>
         ) : (
           users.map((user) => (
-            <div key={user.id} style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: 12, display: 'grid', gap: 10 }}>
+            <div key={user.id} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 12, display: 'grid', gap: 10 }}>
               <div>
                 <div style={{ fontWeight: 600 }}>{user.fullName || '—'}</div>
-                <div style={{ fontSize: 13, color: '#6b7280' }}>{user.email}</div>
+                <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>{user.email}</div>
               </div>
 
               <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))' }}>
@@ -42,7 +43,7 @@ export function UserRoleEditList({ users }: Props) {
                   <select
                     id={`role-${user.id}`}
                     defaultValue={user.role}
-                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: 8, border: '1px solid var(--border-strong)', borderRadius: 8, boxSizing: 'border-box' }}
                   >
                     <option value="staff">Staff</option>
                     <option value="owner">Owner</option>
@@ -72,7 +73,7 @@ export function UserRoleEditList({ users }: Props) {
                     showResult(result.ok, result.message);
                   });
                 }}
-                style={{ padding: '8px 14px', borderRadius: 8, border: 'none', background: '#111827', color: '#fff', maxWidth: 100, fontSize: 14 }}
+                style={{ padding: '8px 14px', borderRadius: 8, border: 'none', background: 'var(--text-primary)', color: '#fff', maxWidth: 100, fontSize: 14 }}
               >
                 {isPending ? 'Saving...' : 'Save'}
               </button>
@@ -82,7 +83,7 @@ export function UserRoleEditList({ users }: Props) {
       </div>
 
       {message ? (
-        <p style={{ margin: 0, color: messageType === 'error' ? '#dc2626' : '#2563eb' }}>{message}</p>
+        <InlineNotice type={messageType === 'error' ? 'error' : 'success'}>{message}</InlineNotice>
       ) : null}
     </section>
   );

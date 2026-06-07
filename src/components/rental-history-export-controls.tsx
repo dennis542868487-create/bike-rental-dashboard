@@ -39,9 +39,9 @@ export function RentalHistoryExportControls() {
             style={{
               padding: '6px 14px',
               borderRadius: 8,
-              border: '1px solid #d1d5db',
-              background: preset === p ? '#111827' : '#fff',
-              color: preset === p ? '#fff' : '#111827',
+              border: '1px solid var(--border-strong)',
+              background: preset === p ? 'var(--text-primary)' : '#fff',
+              color: preset === p ? '#fff' : 'var(--text-primary)',
               cursor: 'pointer',
               fontSize: 13,
               fontWeight: preset === p ? 600 : 400,
@@ -59,15 +59,15 @@ export function RentalHistoryExportControls() {
             value={fromDate}
             onChange={(e) => setFromDate(e.target.value)}
             aria-label="From date"
-            style={{ padding: '6px 10px', borderRadius: 8, border: '1px solid #d1d5db', fontSize: 13 }}
+            style={{ padding: '6px 10px', borderRadius: 8, border: '1px solid var(--border-strong)', fontSize: 13 }}
           />
-          <span style={{ color: '#6b7280', fontSize: 13 }}>to</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>to</span>
           <input
             type="date"
             value={toDate}
             onChange={(e) => setToDate(e.target.value)}
             aria-label="To date"
-            style={{ padding: '6px 10px', borderRadius: 8, border: '1px solid #d1d5db', fontSize: 13 }}
+            style={{ padding: '6px 10px', borderRadius: 8, border: '1px solid var(--border-strong)', fontSize: 13 }}
           />
         </div>
       )}
@@ -82,13 +82,13 @@ export function RentalHistoryExportControls() {
             border: '1px solid #111827',
             textDecoration: 'none',
             color: '#fff',
-            background: '#111827',
+            background: 'var(--text-primary)',
             fontSize: 14,
           }}
         >
           Export ZIP (Owner Only)
         </a>
-        <span style={{ color: '#6b7280', fontSize: 12 }}>
+        <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>
           Includes customer ID information and signatures.
         </span>
       </div>

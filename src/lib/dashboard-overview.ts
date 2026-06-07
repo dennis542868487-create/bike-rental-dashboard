@@ -4,6 +4,7 @@ export type DashboardOverviewStat = {
   label: string;
   value: string | number;
   hint?: string;
+  accent?: 'primary' | 'accent' | 'warning' | 'neutral';
 };
 
 export async function getDashboardOverviewStats(): Promise<DashboardOverviewStat[]> {
@@ -20,22 +21,26 @@ export async function getDashboardOverviewStats(): Promise<DashboardOverviewStat
     {
       label: 'Active Rentals',
       value: activeCount ?? 0,
-      hint: 'Currently out in the field',
+      hint: 'Bikes currently rented out',
+      accent: 'primary',
     },
     {
       label: 'Available Bikes',
       value: availableCount ?? 0,
       hint: 'Ready to rent',
+      accent: 'accent',
     },
     {
       label: 'Maintenance Bikes',
       value: maintenanceCount ?? 0,
-      hint: 'Needs repair or inspection',
+      hint: 'Need repair or inspection',
+      accent: 'warning',
     },
     {
       label: 'Completed Rentals',
       value: completedCount ?? 0,
-      hint: 'Historical completed rentals',
+      hint: 'Rentals returned and closed',
+      accent: 'neutral',
     },
   ];
 }

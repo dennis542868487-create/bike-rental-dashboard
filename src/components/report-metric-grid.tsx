@@ -7,7 +7,7 @@ type ReportMetricGridProps = {
 export function ReportMetricGrid({ items }: ReportMetricGridProps) {
   if (items.length === 0) {
     return (
-      <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 24, background: '#fff', textAlign: 'center', color: '#6b7280' }}>
+      <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 24, background: 'var(--surface)', textAlign: 'center', color: 'var(--text-muted)' }}>
         No report metrics available.
       </div>
     );
@@ -22,10 +22,10 @@ export function ReportMetricGrid({ items }: ReportMetricGridProps) {
       }}
     >
       {items.map((item) => (
-        <div key={item.label} style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff' }}>
-          <div style={{ fontSize: 14, color: '#6b7280' }}>{item.label}</div>
+        <div key={item.label} style={{ border: '1px solid var(--border)', borderRadius: 12, padding: 16, background: 'var(--surface)' }}>
+          <div style={{ fontSize: 14, color: 'var(--text-muted)' }}>{item.label}</div>
           <div style={{ fontSize: 28, fontWeight: 700, marginTop: 8 }}>{item.value}</div>
-          <div style={{ fontSize: 13, color: '#9ca3af', marginTop: 8 }}>{item.period}</div>
+          <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 8 }}>{item.period}</div>
         </div>
       ))}
     </div>

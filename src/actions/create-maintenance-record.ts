@@ -37,9 +37,10 @@ export async function createMaintenanceRecordAction(input: {
   } as never);
 
   if (error) {
+    console.error('createMaintenanceRecordAction failed:', error);
     return {
       ok: false,
-      message: error.message,
+      message: 'Unable to save this maintenance record. Please try again.',
     };
   }
 
